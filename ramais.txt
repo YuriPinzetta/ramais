@@ -1,0 +1,13 @@
+Contatos
+==========
+id	Nome Cargo
+1		Yuri Estagiario
+
+Ramais
+==================
+id_contato	id tipo						ramal
+1						1		Casa/Celular  234
+1						2		Casa/Celular  235
+1						3		Casa/Celular  236
+1						4		Casa/Celular  237
+
