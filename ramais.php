@@ -73,7 +73,7 @@
 					<div class="row">
 						<div class="col-md-2">
 							<div class="form-group">
-								<input id="enviar" name="Enviar" type="submit" value="Enviar" class="MeuInput form-control">
+								<input id="enviar" name="Enviar" type="submit" value="Enviar" class="MeuInput form-control"/>
 							</div>
 						</div>
 					</div>

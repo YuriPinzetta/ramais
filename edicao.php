@@ -20,7 +20,15 @@
 		}
 		alteraContato($contato, $ramais, $conn);
 	}
-	if (isset($_POST['Deletar'])) {
+	if (isset($_POST['deletaRamais'])) {
+		$contato = array(
+			'id_contato' => $_GET['id_contato']
+		);
+		if (deletaRamal($contato, $conn)) {
+			return header('Location: index.php');
+		}
+	}
+	if (isset($_POST['deletaContato'])) {
 		$contato = array(
 			'id_contato' => $_GET['id_contato']
 		);
@@ -122,12 +130,17 @@
 					<div class="row">
 						<div class="col-md-2">
 							<div class="form-group">
-								<input name="Alterar" type="submit" value="Alterar" class="MeuInput form-control">
+								<input name="Alterar" type="submit" value="Alterar" class="form-control botao">
 							</div>
 						</div>
 						<div class="col-md-2">
 							<div class="form-group">
-								<input name="Deletar" type="submit" value="Deletar" class="MeuInput form-control">
+								<input name="deletaRamais" type="submit" value="Deletar Ramais" class="form-control botao">
+							</div>
+						</div>
+						<div class="col-md-2">
+							<div class="form-group">
+								<input name="deletaContato" type="submit" value="Deletar Contato" class="form-control botao">
 							</div>
 						</div>
 					</div>

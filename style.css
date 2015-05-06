@@ -8,3 +8,7 @@ a {
 tr th{
 	text-align:center;
 }
+.botao{
+	font-family:georgia;
+	border-radius:20px;
+}
