@@ -2,18 +2,14 @@
 	$id_contato = $_POST['id_contato'];
 	$tipos = $_POST['tipos'];
 	$ramal = $_POST['ramal'];
-
-	include "./mysqlconecta.php"; // Conecta ao banco de dados
-	include "./mysqlexecuta.php"; // Executa a clausula SQL
 	
-	$sql = "select coalesce(max(id),0) + 1 as id from ramal";
-	$res = mysql_query($sql, $id);
-	$result = mysql_fetch_assoc($res);
-	$id_ramal = $result['id'];
+	if (empty($tipos) || empty($ramal)) {
+    return header("HTTP/1.1 404 Bad Request");
+		  }
 
-	$sql = "INSERT INTO ramal (id_contato, id, tipo, ramal) 
-							VALUES ('$id_contato', '$id_ramal', '$tipos', '$ramal');";
-	$res = mysqlexecuta($id,$sql);
-	var_dump($res);
+	include "../lib/functions.php";
+
+	$conn = db();
+	inserirRamal($id_contato, $tipos, $ramal, $conn);
 	header('Location: index.php');
 ?>

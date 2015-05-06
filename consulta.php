@@ -1,25 +1,34 @@
 <?php
-include "./mysqlconecta.php"; // Conecta ao banco de dados
-$res = mysql_query("
-	select id, contato
-	from contato
-", $id);
-
-$contatos = array();
-while ($contato = mysql_fetch_assoc($res)) {
-	$contatos[] = $contato;
-}
+	include "../lib/functions.php";
+	$conn = db();
+	$todos_contatos = listarContatos(array(), $conn);
+	$contato_selecionado = null;
+	if(isset($_GET['id_contato'])){
+		$contatos = listarContatos($_GET, $conn);
+		$contato_selecionado = $_GET['id_contato'];
+	}
+	$todos_cargos = listarCargos(array(), $conn);
+	$cargo_selecionado = null;
+	if(isset($_GET['cargos'])){
+		$cargo_selecionado = $_GET['cargos'];
+	}
+	$tipos_selecionado = null;
+	if(isset($_GET['tipos'])){
+		$tipos_selecionado = $_GET['tipos'];
+	}
+	$todos_tipos = array(
+		"Interno",
+		"Casa",
+		"Celular",
+		"Notebook"
+	);
 ?>
 <!DOCTYPE html>
 	<html>
 		<head>
-			<meta charset="UTF-8">
-			<title>Ramais</title>
-			<meta http-equiv="X-UA-Compatible" content="IE=edge">
-			<meta name="viewport" content="width=device-width, user-scalable=no">
-			<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-			<script src="bootstrap/js/bootstrap.min.js"></script>
-			<script src="jquery/jquery.js"></script>
+			<?php
+				include 'head.php';
+			?>
 		</head>
 		<body>
 			<div class="container">
@@ -33,7 +42,7 @@ while ($contato = mysql_fetch_assoc($res)) {
 									<span class="icon-bar"></span>
 									<span class="icon-bar"></span>
 								</button>
-								<a class="navbar-brand" href="#">AMIX</a>
+								<a class="navbar-brand" href="index.php">AMIX</a>
 							</div>
 						</div>
 					</nav>
@@ -44,9 +53,21 @@ while ($contato = mysql_fetch_assoc($res)) {
 							<div class="form-group">
 								<label>Contato :</label>
 								<select class="form-control" name="id_contato">
-								<?php foreach ($contatos as $contato) { ?>
-									<option value="<?php echo $contato['id'] ?>"><?php echo $contato['contato'] ?></option>
-								<?php } ?>
+									<option value="">Todos</option>
+									<?php foreach ($todos_contatos as $contato) { ?>
+										<option value="<?php echo $contato['id'] ?>" <?=$contato['id'] == $contato_selecionado ? 'selected' : ''?>><?php echo $contato['contato'] ?></option>
+									<?php } ?>
+								</select>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label>Cargos :</label>
+								<select class="form-control" name="cargos">
+									<option value="">Todos</option>
+									<?php foreach ($todos_cargos as $cargo) { ?>
+										<option value="<?php echo $cargo['cargos'] ?>" <?=$cargo['cargos'] == $cargo_selecionado ? 'selected' : ''?>><?php echo $cargo['cargos'] ?></option>
+									<?php } ?>
 								</select>
 							</div>
 						</div>
@@ -55,10 +76,9 @@ while ($contato = mysql_fetch_assoc($res)) {
 								<label>Tipos :</label>
 								<select class="form-control" name="tipos">
 									<option value="">Todos</option>
-									<option value="Interno">Interno</option>
-									<option value="Casa">Casa</option>
-									<option value="Celular">Celular</option>
-									<option value="Notebook">Notebook</option>
+									<?php foreach ($todos_tipos as $tipos) { ?>
+										<option value="<?=$tipos?>" <?=($tipos_selecionado == $tipos ? 'selected' : '')?>><?=$tipos?></option>
+									<?php } ?>
 								</select>
 							</div>
 						</div>
@@ -66,11 +86,41 @@ while ($contato = mysql_fetch_assoc($res)) {
 					<div class="row">
 						<div class="col-md-2">
 							<div class="form-group">
-								<input name="Enviar" type="submit" value="Enviar" class="MeuInput form-control">
+								<input id="enviar" name="Enviar" type="submit" value="Enviar" class="MeuInput form-control">
 							</div>
 						</div>
 					</div>
 				</form>
+				<div class="table-responsive">
+					<?php if(isset($contatos)) { ?>
+					<table class="table table-striped table-bordered">
+						<tr>
+							<th>Contato</th>
+							<th>Cargo</th>
+							<th>Tipo / Ramal</th>
+						</tr>
+						<?php foreach ($contatos as $contato) {
+							$href = 'edicao.php?id_contato=' . $contato['id'];
+						?>
+						<tr>
+							<td>
+								<a href="<?=$href?>">
+									<span class="glyphicon glyphicon-edit" aria-hidden="true"> <?=$contato['contato']?></span>
+								</a>
+							</td>
+							<td><?=$contato['cargos']?></td>
+							<td>
+								<ul>
+								<?php foreach ($contato['ramais'] as $ramal) { ?>
+									<li><?=$ramal['tipo']?> - <?=$ramal['ramal']?></li>
+								<?php } ?>
+								</ul>
+							</td>
+						</tr>
+						<?php } ?>
+					</table>
+					<?php } ?>
+				</div>
 			</div>
 		</div>
 	</body>
