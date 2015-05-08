@@ -1,3 +1,10 @@
+<?php
+	include "../lib/functions.php";
+	if(isset($_POST['logar'])){
+		$conn = db();
+		validaUsuario($_POST, $conn);
+	}
+?>
 <!DOCTYPE html>
 	<html>
 		<head>
@@ -6,28 +13,35 @@
 			?>
 		</head>
 		<body>
-			<div class="container">
-				<div class="row">
-					<nav class="navbar navbar-default">
-						<div class="container-fluid">
-							<div class="navbar-header">
-								<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-									<span class="sr-only">Toggle navigation</span>
-									<span class="icon-bar"></span>
-									<span class="icon-bar"></span>
-									<span class="icon-bar"></span>
-								</button>
-								<a class="navbar-brand" href="#">AMIX</a>
+			<?php include "menu.php";?>
+			<form action="" method="post">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-4">
+							<div class="form-group">
+								<label>Login :</label>
+								<input type="text" name="usuario" placeholder="Usuário" class="form-control"/>
 							</div>
 						</div>
-					</nav>
-				</div>
-				<div class="row">
-					<div class="form-group">
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<div class="form-group">
+								<label>Senha :</label>
+								<input type="password" name="senha" placeholder="Senha" class="form-control"/>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-2">
+							<div class="form-group">
+								<input name="logar" type="submit" value="logar" class="form-control botao">
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+		</form>
 	</body>
 <html>
 

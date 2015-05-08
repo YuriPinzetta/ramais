@@ -1,3 +1,6 @@
+<?php 
+	include "../lib/functions.php";
+?>
 <!DOCTYPE html>
 	<html>
 		<head>
@@ -15,27 +18,12 @@
 					inputCa.addEventListener('keyup', contador, false);
 					salva_form.addEventListener('submit', submit, false);
 					var bloqueiaTecla1 = new BloqueadoTecla();
-					inputCo.addEventListener('keypress', function (event) { bloqueiaTecla1.bloqueia(event); }, false);
+					inputCo.addEventListener('keyup', function (event) { bloqueiaTecla1.bloqueia(event); }, false);
 				};
 			</script>
 		</head>
 		<body>
-			<div class="container">
-				<div class="row">
-					<nav class="navbar navbar-default">
-						<div class="container-fluid">
-							<div class="navbar-header">
-								<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-									<span class="sr-only">Toggle navigation</span>
-									<span class="icon-bar"></span>
-									<span class="icon-bar"></span>
-									<span class="icon-bar"></span>
-								</button>
-								<a class="navbar-brand" href="index.php">AMIX</a>
-							</div>
-						</div>
-					</nav>
-				</div>
+			<?php include "menu.php"; ?>
 				<form action="salva_form.php" method="post" id="salva_form">
 					<div class="row">
 						<div class="col-md-4">
@@ -55,7 +43,7 @@
 					<div class="row">
 						<div class="col-md-2">
 							<div class="form-group">
-								<input id="enviar" name="Enviar" type="submit" value="Enviar" class="MeuInput form-control">
+								<input name="Enviar" type="submit" value="Enviar" class="form-control botao">
 							</div>
 						</div>
 					</div>
