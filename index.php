@@ -3,7 +3,7 @@
 	session_start();
 	$ulog = usuarioLogado();
 	if(!$ulog){
-		header("Location: login.php");
+		return header("Location: login.php");
 	}
 	//include "menu.php";
 ?>

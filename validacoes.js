@@ -6,14 +6,14 @@ function apenasNumero(event){
 	event.preventDefault();
 	return false;
 }
-//funçao que bloqueia qualquer tecla
+//funçao que bloqueia tecla contato qualquer tecla
 function BloqueadoTecla(){
 	this.valor_anterior = null;
 }
 BloqueadoTecla.prototype.bloqueia = function (event) {
 	var input = event.target;
 	var value = input.value;
-	var re = /[3-9]/;
+	var re = /[^0-9a-zA-Z\s]/;
 	var match = value.match(re);
 	if (match) {
 		alert('Letra proibida: ' + match[0]);
@@ -25,20 +25,6 @@ BloqueadoTecla.prototype.bloqueia = function (event) {
 };
 
 var valor_anterior, maxLength = 0;
-
-function bloqueiaTecla(event) {
-	var input = event.target;
-	var value = input.value;
-	var re = /[3-9]/;
-	var match = value.match(re);
-	if (match) {
-		alert('Letra proibida: ' + match[0]);
-		valor_anterior = valor_anterior || input.defaultValue;
-		input.value = valor_anterior;
-	} else {
-		valor_anterior = input.value;
-	}
-}
 
 //funcao que conta quantos caracteres foram apertados.
 function contador(event) {

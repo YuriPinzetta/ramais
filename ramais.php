@@ -1,5 +1,10 @@
 <?php
 	include "../lib/functions.php";
+	session_start();
+	$ulog = usuarioLogado();
+	if(!$ulog){
+		return header("Location: login.php");
+	}
 	$conn = db();
   $res = mysql_query("
 		select id, contato

@@ -15,7 +15,9 @@
 								<?php } ?>
 							</div>
 							<?php if(usuarioLogado()){ ?>
-							<button name="botao" type="submit" class="btn btn-default navbar-btn navbar-right"><a href="sair.php">Sair</a></button>
+							<a href="sair.php">
+								<button name="botao" type="submit" class="btn btn-default navbar-btn navbar-right">Sair</button>
+							</a>
 							<?php } ?>
 						</div>
 					</nav>

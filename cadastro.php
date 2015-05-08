@@ -1,9 +1,8 @@
 <?php
 	include "../lib/functions.php";
-	session_start();
-	if(isset($_POST['logar'])){
-		$conn = db();
-		validaUsuario($_POST, $conn);
+	$conn = db();
+	if(isset($_POST['cadastrar']) && $_POST['cadastrar'] == 'cadastrar'){
+		verificaUsuario($_POST, $conn);
 	}
 ?>
 <!DOCTYPE html>
@@ -12,6 +11,13 @@
 			<?php
 				include 'head.php';
 			?>
+			<script>
+				window.onload = function(){
+					var inputCo = document.getElementById("login");
+					var bloqueiaTecla1 = new BloqueadoTecla();
+					inputCo.addEventListener('keyup', function (event) { bloqueiaTecla1.bloqueia(event); }, false);
+				};
+			</script>
 		</head>
 		<body>
 			<?php include "menu.php";?>
@@ -21,7 +27,7 @@
 						<div class="col-md-4">
 							<div class="form-group">
 								<label>Login :</label>
-								<input type="text" name="usuario" placeholder="Usuário" class="form-control"/>
+								<input id="login" type="text" name="usuario" placeholder="Usuário" class="form-control"/>
 							</div>
 						</div>
 					</div>
@@ -36,14 +42,7 @@
 					<div class="row">
 						<div class="col-md-2">
 							<div class="form-group">
-								<input name="logar" type="submit" value="logar" class="form-control botao">
-							</div>
-						</div>
-						<div class="col-md-2">
-							<div class="form-group">
-								<a href="cadastro.php">
-									<input name="cadastre-se" type="button" value="cadastre-se" class="form-control botao"/>
-								</a>
+								<input name="cadastrar" type="submit" value="cadastrar" class="form-control botao">
 							</div>
 						</div>
 					</div>
