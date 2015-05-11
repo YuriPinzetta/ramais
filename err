@@ -1,0 +1,2 @@
+PHP Notice:  #0 /vagrant/scripts/pdo01.php(6): PDO->__construct('mysql:host=loca...', 'yuri', 'Pinzettax')
+#1 {main} in /vagrant/scripts/pdo01.php on line 9

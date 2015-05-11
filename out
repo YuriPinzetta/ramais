@@ -1,0 +1,1 @@
+Exception: SQLSTATE[28000] [1045] Access denied for user 'yuri'@'localhost' (using password: YES)
