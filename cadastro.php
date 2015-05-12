@@ -1,8 +1,9 @@
 <?php
 	include "../lib/functions.php";
-	$conn = db();
+	session_start();
 	if(isset($_POST['cadastrar']) && $_POST['cadastrar'] == 'cadastrar'){
-		verificaUsuario($_POST, $conn);
+		$pdo = db();
+		verificaUsuario($_POST, $pdo);
 	}
 ?>
 <!DOCTYPE html>

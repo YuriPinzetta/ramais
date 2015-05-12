@@ -2,8 +2,8 @@
 	include "../lib/functions.php";
 	session_start();
 	if(isset($_POST['logar'])){
-		$conn = db();
-		validaUsuario($_POST, $conn);
+		$pdo = db();
+		validaUsuario($_POST, $pdo);
 	}
 ?>
 <!DOCTYPE html>

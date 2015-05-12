@@ -5,14 +5,10 @@
 	if(!$ulog){
 		return header("Location: login.php");
 	}
-	$conn = db();
-  $res = mysql_query("
-		select id, contato
-		from contato", $conn
-		);
-	$contatos = array();
-		while ($contato = mysql_fetch_assoc($res)) {
-		$contatos[] = $contato;
+	$pdo = db();
+	$contatos = listarContatos(array(), $pdo);
+	if(isset($_POST['Enviar'])){
+		inserirRamal($_POST, $pdo);
 	}
 ?>
 <!DOCTYPE html>
@@ -30,7 +26,7 @@
 		</head>
 		<body>
 			<?php include "menu.php"?>
-				<form action="salva_form_ramal.php" method="post">
+				<form action="" method="post">
 					<div class="row">
 						<div class="col-md-3">
 							<div class="form-group">

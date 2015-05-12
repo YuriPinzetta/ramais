@@ -5,7 +5,6 @@
 	if(!$ulog){
 		return header("Location: login.php");
 	}
-	//include "menu.php";
 ?>
 <!DOCTYPE html>
 	<html>

@@ -5,6 +5,10 @@
 	if(!$ulog){
 		return header("Location: login.php");
 	}
+	$pdo = db();
+	if(isset($_POST['Enviar'])){
+		inserirContato($_POST, $pdo);
+	}
 ?>
 <!DOCTYPE html>
 	<html>
@@ -29,7 +33,7 @@
 		</head>
 		<body>
 			<?php include "menu.php"; ?>
-				<form action="salva_form.php" method="post" id="salva_form">
+				<form action="" method="post" id="salva_form">
 					<div class="row">
 						<div class="col-md-4">
 							<div class="form-group">
