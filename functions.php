@@ -24,25 +24,27 @@ function inserirContato(array $params, $pdo) {
 	}
 	$stmt = $pdo->prepare('INSERT INTO contato(cargos, contato) VALUES (:cargo,:contato)');
 	$stmt->execute(array(':cargo' => $cargo, ':contato' => $contato));
+	header("Location: index.php");
 }
 
 
-function inserirRamal($id_contato, $tipos, $ramal, $pdo){
-	$id_contato = $_POST['id_contato'];
-  $tipos = $_POST['tipos'];
-	$ramal = $_POST['ramal'];
+function inserirRamal(array $params, $pdo){
+	$id_contato = $params['id_contato'];
+  $tipos = $params['tipos'];
+	$ramal = $params['ramal'];
 
 	if (empty($tipos) || empty($ramal)) {
 		return header("HTTP/1.1 404 Bad Request");
 	}
 	
-	$stmt = $pdo->prepare('select coalesce(max(id),0) +1 as id from ramal');
-	$stmt->setFetchMode(PDO::FETCH_ASSOC);
-	$result = $stmt;
+	$stmt = $pdo->prepare('select coalesce(max(id),0) + 1 as id from ramal');
+	$stmt->execute();
+	$result = $stmt->fetch(PDO::FETCH_ASSOC);
 	$id_ramal = $result['id'];
 	
 	$stmt = $pdo->prepare('INSERT INTO ramal(id_contato, id, tipo,ramal) VALUES (:id_contato, :id_ramal, :tipos, :ramal)');
 	$stmt->execute(array(':id_contato' => $id_contato, ':id_ramal' => $id_ramal, ':tipos' => $tipos, 'ramal' => $ramal));
+	header("Location: index.php");
 }
 
 function listarRamais(array $params, $pdo) {
@@ -51,6 +53,7 @@ function listarRamais(array $params, $pdo) {
 	$stmt = $pdo->prepare("select	id,	ramal, tipo	from ramal where id_contato = '$id_contato'
 		" . ($tipos ? "and tipo = '$tipos'" : "") . "
 	");
+	$stmt->execute(array(':id_contato' => $id_contato, ':tipos' => $tipos));
 	$ramais = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	return $ramais;
 }
@@ -67,7 +70,8 @@ function listarContatos(array $params, $pdo) {
 		$filtros[] = "cargos = '$cargos'";
 	}
 	$stmt = $pdo->prepare("
-	select id, 
+	select id,
+	cargos,
 	contato 
 	from contato" . (count($filtros) > 0 ? 'where ' . implode(' and ', $filtros) : '') . "
 	");
@@ -95,79 +99,59 @@ function listarCargos(array $params, $pdo) {
 }
 function consultaContato(array $params, $pdo){
 	$id = $params['id_contato'];
-	$sql = "select id,contato,cargos from contato WHERE id = '$id'";
-	$res = mysql_query($sql, $conn);
-	if($res === false){
-		trigger_error(mysql_error($conn));
-		return false;
-	}
-	$contato = mysql_fetch_assoc($res);
+	$stmt = $pdo->prepare('select id, contato, cargos from contato WHERE id = :id');
+	$stmt->execute(array(':id' => $id));
+	$contato = $stmt->fetch(PDO::FETCH_ASSOC);
 	return $contato;
 }
-function alteraContato(array $params, array $ramais, $conn){
-	$id = $params['id_contato'];
+function alteraContato(array $params, array $ramais, $pdo){
 	$contatos = $params['contato'];
 	$cargos = $params['cargos'];
-	$sql = "update contato set contato='$contatos', cargos='$cargos' WHERE id = '$id'";
-	$res = mysql_query($sql, $conn);
-	if($res === false){
-		trigger_error(mysql_error($conn));
-		return false;
-	}
-	alteraRamais($id, $ramais, $conn);
+	$id = $params['id_contato'];
+	$stmt = $pdo->prepare("update contato set contato=:contatos, cargos=:cargos WHERE id = :id");
+	$stmt->execute(array(':contatos' => $contatos,':cargos' => $cargos,':id' => $id));
+	alteraRamais($id, $ramais, $pdo);
 }
-function alteraRamais($id_contato, array $ramais, $conn) {
+function alteraRamais($id_contato, array $ramais, $pdo) {
 	foreach ($ramais as $ramal) {
-		alteraRamal($id_contato, $ramal, $conn);
+		alteraRamal($id_contato, $ramal, $pdo);
 	}
 }
-function alteraRamal($id_contato, array $params, $conn) {
-	$id = $params['id'];
+function alteraRamal($id_contato, array $params, $pdo) {
 	$tipos = $params['tipos'];
 	$ramal = $params['ramal'];
-	$sql = "update ramal set tipo='$tipos', ramal='$ramal' WHERE id_contato = '$id_contato' and id = '$id'";
-	$res = mysql_query($sql, $conn);
-	if($res === false){
-		trigger_error(mysql_error($conn));
-		return false;
-	}
+	$id = $params['id'];
+	$stmt = $pdo->prepare("update ramal set tipo = :tipos, ramal = :ramal WHERE id_contato = :id_contato and id = :id");
+	$stmt->execute(array(':tipos' => $tipos,':ramal' => $ramal,':id_contato' => $id_contato, ':id' => $id));
+	header("Location: index.php");
 }
-function deletaRamal(array $params, $conn) {
+function deletaRamal(array $params, $pdo) {
 	$id = $params['id_contato'];
-	$sql = "delete from ramal WHERE id_contato = '$id'";
-	$res = mysql_query($sql, $conn);
-	if($res === false){
-		trigger_error(mysql_error($conn));
-		return false;
-	}
-	return true;
+	$stmt = $pdo->prepare("delete from ramal WHERE id_contato = :id");
+	$stmt->execute(array(':id' => $id));
+	header("Location: index.php");
 }
-function deletaContato(array $params, $conn) {
+function deletaContato(array $params, $pdo) {
 	$id = $params['id_contato'];
-	$sql = "delete from contato WHERE id = '$id'";
-	$res = mysql_query($sql, $conn);
-	if($res === false){
-		trigger_error(mysql_error($conn));
-		return false;
-	}
-	return true;
+	$stmt = $pdo->prepare("delete from contato WHERE id = :id");
+	$stmt->execute(array(':id' => $id));
+	header("Location: index.php");
 }
-function validaUsuario(array $params, $conn){
+function validaUsuario(array $params, $pdo){
 	$login = $params['usuario'];
 	$senha = md5($params['senha'].".AMIX");
-	$sql  = "select login from usuario where login = '$login' and senha = '$senha' ";
-	$res = mysql_query($sql, $conn);
-	//var_dump($res);
-	$nlinha = mysql_num_rows($res);
-	//var_dump($nlinha);
+	$stmt  = $pdo->prepare("select login from usuario where login = :login and senha = :senha");
+	$stmt->execute(array(':login' => $login, ':senha' => $senha));
+	$nlinha = $stmt->rowCount();
 	if($nlinha > 0){
-		$usuario = mysql_fetch_assoc($res);
+		$usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+		//trigger_error(print_r(array($nlinha, $usuario), true));
+		//trigger_error(var_export(array($nlinha, $usuario), true));
 		$_SESSION['usuario'] = $usuario['login'];
 		header ("Location: index.php");
 	} else{
 		echo "<script>alert ('Usuario ou senha não existe.')</script>";
 	}
-	//var_dump($params);
 }
 function usuarioLogado(){
 	if(array_key_exists('usuario', $_SESSION) && $_SESSION['usuario'] != ""){
@@ -176,20 +160,20 @@ function usuarioLogado(){
 		return false;
 	}
 }
-function cadastraUsuario(array $params, $conn){
+function cadastraUsuario(array $params, $pdo){
 	$ilogin = $params['usuario'];
 	$isenha = md5($params['senha'].".AMIX");
-	$sql = "INSERT INTO `ramais`.`usuario` (`login`, `senha`) 
-							VALUES ('$ilogin', '$isenha');";
-	return dbExecuta($conn, $sql);
+	$stmt = $pdo->prepare("INSERT INTO 'ramais'.'usuario' ('login', `senha`) 
+							VALUES (:ilogin, :isenha);");
+	$stmt->execute(array(':ilogin' => $ilogin, 'isenha' => $isenha));
 }
-function verificaUsuario(array $params, $conn){
+function verificaUsuario(array $params, $pdo){
 	$login = $params['usuario'];
-	$sql = "select login from usuario where login = '$login'";
-	$res = mysql_query($sql, $conn);
-	$existe = mysql_num_rows($res);
+	$stmt = $pdo->prepare("select login from usuario where login = :login");
+	$stmt->execute(array(':login' => $login));
+	$existe = $stmt->rowCount();
 if ($existe == 0){
-	cadastraUsuario($_POST, $conn);
+	cadastraUsuario($_POST, $pdo);
 	return header ("Location: login.php");
 } else{
 	echo "<script>alert ('Este usuário já existe, tente outro.')</script>";
