@@ -1,0 +1,10 @@
+Copa 1          |Amix   |Interno |106 
+Corredor 1      |Amix   |Interno |105 
+Copa 2          |Amix   |Interno |103 
+Corredor 2      |Amix   |Interno |104 
+Recepção prédio |Prédio |Interno |109 
+Garagem         |Prédio |Interno |108 
+Puxar ligação   |Amix   |Interno |199 
+teste           |teste  |Casa    |789 
+teste2          |teste2 |Interno |234 
+teste3          |teste3 |Celular |345 

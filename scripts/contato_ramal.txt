@@ -1,0 +1,10 @@
+Copa 1	106
+Corredor 1	105
+Copa 2	103
+Corredor 2	104
+Recepção prédio	109
+Garagem	108
+Puxar ligação	199
+teste	789
+teste2	234
+teste3	345
