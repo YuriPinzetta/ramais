@@ -33,7 +33,6 @@
 				}
 			}
 		}
-		var_dump($maxColunas);
 
 		foreach($array as $ramalContato){
 			$colunas = array();
