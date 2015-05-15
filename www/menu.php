@@ -10,7 +10,7 @@
 									<span class="icon-bar"></span>
 								</button>
 								<a class="navbar-brand" href="index.php">AMIX</a>
-								<?php if(usuarioLogado()){ ?>
+								<?php if (usuarioLogado()){ ?>
 									<p class="navbar-text">Bem-vindo, <?=$_SESSION['usuario']?></p>
 								<?php } ?>
 							</div>

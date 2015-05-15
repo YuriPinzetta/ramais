@@ -1,17 +1,15 @@
 <?php
-	include("../lib/functions.php");
-	session_start();
-	$ulog = usuarioLogado();
-	if(!$ulog){
-		return header("Location: login.php");
-	}
+include("../lib/functions.php");
+session_start();
+$ulog = usuarioLogado();
+if (!$ulog) {
+    return header("Location: login.php");
+}
 ?>
 <!DOCTYPE html>
 	<html>
 		<head>
-			<?php
-				include 'head.php';
-			?>
+			<?php include 'head.php';?>
 		</head>
 		<body>
 			<?php include 'menu.php'?>
@@ -44,4 +42,3 @@
 		</div>
 	</body>
 <html>
-

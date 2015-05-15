@@ -1,61 +1,59 @@
 <?php
-	include "../lib/functions.php";
-	session_start();
-	$ulog = usuarioLogado();
-	if(!$ulog){
-		return header("Location: login.php");
-	}
-	$pdo = db();
-	$ramais = array();
-	if (isset($_POST['Alterar'])) {
-		$contato = array(
-			'id_contato' => $_GET['id_contato'],
-			'contato' => $_POST['contato'],
-			'cargos' => $_POST['cargos']
-		);
-		if (isset($_POST['ramal_id']) && is_array($_POST['ramal_id'])) {
-			foreach ($_POST['ramal_id'] as $index => $id) {
-				$ramal = array(
-					'id' => $id,
-					'tipos' => $_POST['tipos'][$index],
-					'ramal' => $_POST['ramal'][$index]
-				);
-				$ramais[] = $ramal;
-			}
-		}
-		alteraContato($contato, $ramais, $pdo);
-	}
-	if (isset($_POST['deletaRamais'])) {
-		$contato = array(
-			'id_contato' => $_GET['id_contato']
-		);
-		if (deletaRamal($contato, $pdo)) {
-			return header('Location: index.php');
-		}
-	}
-	if (isset($_POST['deletaContato'])) {
-		$contato = array(
-			'id_contato' => $_GET['id_contato']
-		);
-		if (deletaRamal($contato, $pdo) &&	deletaContato($contato, $pdo)) {
-			return header('Location: index.php');
-		}
-	}
-	$contato = consultaContato($_GET, $pdo);
-	$ramais = listarRamais($_GET,$pdo);
-	$todos_tipos = array(
-		"Interno",
-		"Casa",
-		"Celular",
-		"Notebook"
-	);
+include "../lib/functions.php";
+session_start();
+$ulog = usuarioLogado();
+if (!$ulog) {
+    return header("Location: login.php");
+}
+$pdo = db();
+$ramais = array();
+if (isset($_POST['Alterar'])) {
+    $contato = array(
+        'id_contato' => $_GET['id_contato'],
+        'contato' => $_POST['contato'],
+        'cargos' => $_POST['cargos']
+    );
+    if (isset($_POST['ramal_id']) && is_array($_POST['ramal_id'])) {
+        foreach ($_POST['ramal_id'] as $index => $id) {
+            $ramal = array(
+                'id' => $id,
+                'tipos' => $_POST['tipos'][$index],
+                'ramal' => $_POST['ramal'][$index]
+            );
+            $ramais[] = $ramal;
+        }
+    }
+    alteraContato($contato, $ramais, $pdo);
+}
+if (isset($_POST['deletaRamais'])) {
+    $contato = array(
+        'id_contato' => $_GET['id_contato']
+    );
+    if (deletaRamal($contato, $pdo)) {
+        return header('Location: index.php');
+    }
+}
+if (isset($_POST['deletaContato'])) {
+    $contato = array(
+        'id_contato' => $_GET['id_contato']
+    );
+    if (deletaRamal($contato, $pdo) && deletaContato($contato, $pdo)) {
+        return header('Location: index.php');
+    }
+}
+$contato = consultaContato($_GET, $pdo);
+$ramais = listarRamais($_GET, $pdo);
+$todos_tipos = array(
+    "Interno",
+    "Casa",
+    "Celular",
+    "Notebook"
+);
 ?>
 <!DOCTYPE html>
 	<html>
 		<head>
-			<?php
-				include 'head.php';
-			?>
+			<?php include 'head.php'; ?>
 			<script>
 			window.onload = function () {
 				var form = document.getElementById('form');
@@ -86,13 +84,17 @@
 						<div class="col-md-3">
 							<div class="form-group">
 								<label>Nome do Contato :</label>
-										<input type="text"  class="form-control" autocomplete="off" name="contato" id="input_contato" value="<?php echo $contato['contato'] ?>"></input>
+										<input type="text"	class="form-control" autocomplete="off" name="contato" 
+                                            id="input_contato" value="<?php echo $contato['contato'] ?>">
+                                        </input>
 							</div>
 						</div>
 						<div class="col-md-3">
 							<div class="form-group">
 								<label>Cargos :</label>
-								<input type="text" name="cargos" max-length="50" value="<?php echo $contato['cargos']?>"class="form-control" id="input_cargos" autocomplete="off"/>
+								<input type="text" name="cargos" max-length="50" value="<?php echo $contato['cargos']?>"
+                                    class="form-control" id="input_cargos" autocomplete="off">
+                                </input>
 							</div>
 						</div>
 					</div>

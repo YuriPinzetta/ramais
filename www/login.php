@@ -1,17 +1,15 @@
 <?php
-	include "../lib/functions.php";
-	session_start();
-	if(isset($_POST['logar'])){
-		$pdo = db();
-		validaUsuario($_POST, $pdo);
-	}
+include "../lib/functions.php";
+session_start();
+if (isset($_POST['logar'])) {
+    $pdo = db();
+    validaUsuario($_POST, $pdo);
+}
 ?>
 <!DOCTYPE html>
 	<html>
 		<head>
-			<?php
-				include 'head.php';
-			?>
+			<?php include 'head.php'; ?>
 		</head>
 		<body>
 			<?php include "menu.php";?>
@@ -42,7 +40,8 @@
 						<div class="col-md-2">
 							<div class="form-group">
 								<a href="cadastro.php">
-									<input name="cadastre-se" type="button" value="cadastre-se" class="form-control botao"/>
+									<input name="cadastre-se" type="button" value="cadastre-se" 
+                                        class="form-control botao"/>
 								</a>
 							</div>
 						</div>

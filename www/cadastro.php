@@ -1,17 +1,15 @@
 <?php
-	include "../lib/functions.php";
-	session_start();
-	if(isset($_POST['cadastrar']) && $_POST['cadastrar'] == 'cadastrar'){
-		$pdo = db();
-		verificaUsuario($_POST, $pdo);
-	}
+include "../lib/functions.php";
+session_start();
+if (isset($_POST['cadastrar']) && $_POST['cadastrar'] == 'cadastrar') {
+    $pdo = db();
+    verificaUsuario($_POST, $pdo);
+}
 ?>
 <!DOCTYPE html>
 	<html>
 		<head>
-			<?php
-				include 'head.php';
-			?>
+			<?php include 'head.php'; ?>
 			<script>
 				window.onload = function(){
 					var inputCo = document.getElementById("login");
@@ -28,7 +26,8 @@
 						<div class="col-md-4">
 							<div class="form-group">
 								<label>Login :</label>
-								<input id="login" type="text" name="usuario" placeholder="Usuário" class="form-control"/>
+                                <input id="login" type="text" name="usuario" placeholder="Usuário"
+                                   class="form-control"/>
 							</div>
 						</div>
 					</div>

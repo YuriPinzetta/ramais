@@ -1,39 +1,39 @@
 <?php
-	include "../lib/functions.php";
-	session_start();
-	$ulog = usuarioLogado();
-	if(!$ulog){
-		//return header("Location: login.php");
-	}
-	$pdo = db();
-	$todos_contatos = listarContatos(array(), $pdo);
-	$contato_selecionado = null;
-	if(isset($_GET['id_contato'])){
-		$contatos = listarContatos($_GET, $pdo);
-		$contato_selecionado = $_GET['id_contato'];
-	}
-	$todos_cargos = listarCargos(array(), $pdo);
-	$cargo_selecionado = null;
-	if(isset($_GET['cargos'])){
-		$cargo_selecionado = $_GET['cargos'];
-	}
-	$tipos_selecionado = null;
-	if(isset($_GET['tipos'])){
-		$tipos_selecionado = $_GET['tipos'];
-	}
-	$todos_tipos = array(
-		"Interno",
-		"Casa",
-		"Celular",
-		"Notebook"
-	);
+ include "../lib/functions.php";
+session_start();
+$ulog = usuarioLogado();
+if (!$ulog) {
+    return header("Location: login.php");
+}
+$pdo = db();
+$todos_contatos = listarContatos(array(), $pdo);
+$contato_selecionado = null;
+if (isset($_GET['id_contato'])) {
+    $contatos = listarContatos($_GET, $pdo);
+    $contato_selecionado = $_GET['id_contato'];
+}
+$todos_cargos = listarCargos(array(), $pdo);
+$cargo_selecionado = null;
+if (isset($_GET['cargos'])) {
+    $cargo_selecionado = $_GET['cargos'];
+}
+$tipos_selecionado = null;
+if (isset($_GET['tipos'])) {
+    $tipos_selecionado = $_GET['tipos'];
+}
+$todos_tipos = array(
+    "Interno",
+    "Casa",
+    "Celular",
+    "Notebook"
+);
 ?>
 <!DOCTYPE html>
 	<html>
 		<head>
 			<?php
-				include 'head.php';
-			?>
+            include 'head.php';
+        ?>
 		</head>
 		<body>
 			<?php include "menu.php"?>

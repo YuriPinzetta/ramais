@@ -1,21 +1,19 @@
-<?php 
-	include "../lib/functions.php";
-	session_start();
-	$ulog = usuarioLogado();
-	if(!$ulog){
-		return header("Location: login.php");
-	}
-	$pdo = db();
-	if(isset($_POST['Enviar'])){
-		inserirContato($_POST, $pdo);
-	}
+<?php
+include "../lib/functions.php";
+session_start();
+$ulog = usuarioLogado();
+if (!$ulog) {
+    return header("Location: login.php");
+}
+$pdo = db();
+if (isset($_POST['Enviar'])) {
+    inserirContato($_POST, $pdo);
+}
 ?>
 <!DOCTYPE html>
 	<html>
 		<head>
-			<?php
-				include 'head.php';
-			?>
+			<?php include 'head.php'; ?>
 			<script>
 				window.onload = function(){
 					var inputCa = document.getElementById("input_cargos");
@@ -38,14 +36,16 @@
 						<div class="col-md-4">
 							<div class="form-group">
 								<label>Cargos :</label>
-								<input type="text" name="cargos" max-length="50" class="form-control" id="input_cargos" autofocus autocomplete="off"><br>
+								<input type="text" name="cargos" max-length="50" class="form-control" id="input_cargos" 
+                                   autofocus autocomplete="off"><br>
 								<div><span id="total"></span> Restantes</div>
 							</div>
 						</div>
 						<div class="col-md-4" id="coluna_contato">
 							<div class="form-group">
 								<label>Nome do Contato :</label>
-								<input type="text" name="contato" id="input_contato" value="" class="form-control" autocomplete="off" />
+								<input type="text" name="contato" id="input_contato" value="" class="form-control"
+                                   autocomplete="off" />
 							</div>
 						</div>
 					</div>
