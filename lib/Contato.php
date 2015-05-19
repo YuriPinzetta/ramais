@@ -4,6 +4,7 @@ namespace amixsi;
 
 class Contato
 {
+    private $id;
     private $nome;
     private $cargo;
     private $ramais;
@@ -16,12 +17,13 @@ class Contato
         if (empty($dados['cargos'])) {
             throw new Exception('Cargos não preenchido');
         }
-        $contato = new Contato($dados['contato'], $dados['cargos']);
+        $contato = new Contato($dados['contato'], $dados['cargos'], $dados['id']);
         return $contato;
     }
 
-    public function __construct($nome, $cargo = null)
+    public function __construct($nome, $cargo = null, $id = null)
     {
+        $this->setId($id);
         $this->setNome($nome);
         if ($cargo !== null) {
             $this->setCargo($cargo);
@@ -35,7 +37,17 @@ class Contato
 
     public function setNome($nome)
     {
-        $this->nome = strtoupper($nome);
+        $this->nome = $nome;
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function setId($id)
+    {
+        $this->id = $id;
     }
 
     public function setCargo($cargo)

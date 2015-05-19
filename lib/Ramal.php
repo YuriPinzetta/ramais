@@ -4,13 +4,25 @@ namespace amixsi;
 
 class Ramal
 {
-    private $contato;
+    private $id_contato;
     private $id;
     private $tipo;
     private $numero;
+    private $contato;
 
-    public function __construct($numero)
+    public static function fromArray($dados)
     {
+        if (empty($dados['ramal'])) {
+            throw new Exception('Ramal não preenchido');
+        }
+        $ramal = new Ramal($dados['tipos'], $dados['id_contato'], $dados['ramal']);
+        return $ramal;
+    }
+
+    public function __construct($tipo, $id_contato, $numero)
+    {
+        $this->setTipo($tipo);
+        $this->setIdcontato($id_contato);
         $this->setNumero($numero);
     }
 
@@ -32,5 +44,25 @@ class Ramal
     public function getNumero()
     {
         return $this->numero;
+    }
+
+    public function setIdcontato($id_contato)
+    {
+        $this->id_contato = $id_contato;
+    }
+
+    public function getIdcontato()
+    {
+        return $this->id_contato;
+    }
+
+    public function setTipo($tipo)
+    {
+        $this->tipo = $tipo;
+    }
+
+    public function getTipo()
+    {
+        return $this->tipo;
     }
 }

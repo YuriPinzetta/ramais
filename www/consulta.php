@@ -1,15 +1,20 @@
 <?php
- include "../lib/functions.php";
+include "../lib/functions.php";
+include "../lib/Contato.php";
+include "../lib/ContatoDAO.php";
+include "../lib/Ramal.php";
+include "../lib/RamalDAO.php";
 session_start();
 $ulog = usuarioLogado();
 if (!$ulog) {
     return header("Location: login.php");
 }
 $pdo = db();
-$todos_contatos = listarContatos(array(), $pdo);
+$contatoDAO = new ContatoDAO($pdo);
+$todos_contatos = $contatosDAO->listar(array());
 $contato_selecionado = null;
 if (isset($_GET['id_contato'])) {
-    $contatos = listarContatos($_GET, $pdo);
+    $contatos = $contatosDAO->listar($_GET);
     $contato_selecionado = $_GET['id_contato'];
 }
 $todos_cargos = listarCargos(array(), $pdo);

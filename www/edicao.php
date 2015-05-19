@@ -1,5 +1,12 @@
 <?php
 include "../lib/functions.php";
+include "../lib/Contato.php";
+include "../lib/ContatoDAO.php";
+include "../lib/Ramal.php";
+
+use amixsi\ContatoDAO;
+use amixsi\Contato;
+
 session_start();
 $ulog = usuarioLogado();
 if (!$ulog) {
@@ -41,8 +48,10 @@ if (isset($_POST['deletaContato'])) {
         return header('Location: index.php');
     }
 }
-$contato = consultaContato($_GET, $pdo);
-$ramais = listarRamais($_GET, $pdo);
+$contatoDAO = new ContatoDAO($pdo);
+$contato = $contatoDAO->consulta($_GET['id_contato']);
+$ramalDAO = new ramalDAO($pdo);
+$ramais = $ramalDAO->listar($pdo);
 $todos_tipos = array(
     "Interno",
     "Casa",
@@ -85,14 +94,14 @@ $todos_tipos = array(
 							<div class="form-group">
 								<label>Nome do Contato :</label>
 										<input type="text"	class="form-control" autocomplete="off" name="contato" 
-                                            id="input_contato" value="<?php echo $contato['contato'] ?>">
+                                            id="input_contato" value="<?php echo $contato->getNome() ?>">
                                         </input>
 							</div>
 						</div>
 						<div class="col-md-3">
 							<div class="form-group">
 								<label>Cargos :</label>
-								<input type="text" name="cargos" max-length="50" value="<?php echo $contato['cargos']?>"
+								<input type="text" name="cargos" max-length="50" value="<?php echo $contato->getCargo() ?>"
                                     class="form-control" id="input_cargos" autocomplete="off">
                                 </input>
 							</div>

@@ -14,41 +14,6 @@ function db()
     return $pdo;
 }
 
-
-function inserirRamal(array $params, $pdo)
-{
-    $id_contato = $params['id_contato'];
-    $tipos = $params['tipos'];
-    $ramal = $params['ramal'];
-
-    if (empty($tipos) || empty($ramal)) {
-        return header("HTTP/1.1 404 Bad Request");
-    }
-    
-    $stmt = $pdo->prepare('select coalesce(max(id),0) + 1 as id from ramal');
-    $stmt->execute();
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    $id_ramal = $result['id'];
-    $stmt = $pdo->prepare('INSERT INTO ramal(id_contato, id, tipo,ramal) 
-       VALUES (:id_contato, :id_ramal, :tipos, :ramal)');
-    $stmt->execute(array(':id_contato' => $id_contato,
-       ':id_ramal' => $id_ramal,
-       ':tipos' => $tipos, 'ramal' => $ramal));
-    header("Location: index.php");
-}
-
-function listarRamais(array $params, $pdo)
-{
-    $id_contato = $params['id_contato'];
-    $tipos = isset($params['tipos']) ? $params['tipos'] : null;
-    $stmt = $pdo->prepare("select   id, ramal, tipo from ramal where id_contato = '$id_contato'
-        " . ($tipos ? "and tipo = '$tipos'" : "") . "
-    ");
-    $stmt->execute(array(':id_contato' => $id_contato, ':tipos' => $tipos));
-    $ramais = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    return $ramais;
-}
-
 function listarContatos(array $params, $pdo)
 {
     $id_contato = !empty($params['id_contato']) ? $params['id_contato'] : null;
@@ -75,7 +40,7 @@ function listarContatos(array $params, $pdo)
             'id_contato' => $contato['id'],
             'tipos' => $tipos
         );
-        $ramais = listarRamais($params, $pdo);
+        $ramais = listar($ramal);
         $contato['ramais'] = $ramais;
         if ($tipos === null || count($ramais) > 0) {
             $contatos_return[] = $contato;
@@ -89,14 +54,6 @@ function listarCargos(array $params, $pdo)
     $stmt->execute();
     $cargos = $stmt->fetchAll(PDO::FETCH_ASSOC);
     return $cargos;
-}
-function consultaContato(array $params, $pdo)
-{
-    $id = $params['id_contato'];
-    $stmt = $pdo->prepare('select id, contato, cargos from contato WHERE id = :id');
-    $stmt->execute(array(':id' => $id));
-    $contato = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $contato;
 }
 function alteraContato(array $params, array $ramais, $pdo)
 {
