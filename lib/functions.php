@@ -14,19 +14,6 @@ function db()
     return $pdo;
 }
 
-function inserirContato(array $params, $pdo)
-{
-    $cargo = $params['cargos'];
-    $contato = $params['contato'];
-
-    if (empty($cargo) || empty($contato)) {
-        return header("HTTP/1.1 404 Bad Request");
-    }
-    $stmt = $pdo->prepare('INSERT INTO contato(cargos, contato) VALUES (:cargo,:contato)');
-    $stmt->execute(array(':cargo' => $cargo, ':contato' => $contato));
-    header("Location: index.php");
-}
-
 
 function inserirRamal(array $params, $pdo)
 {
