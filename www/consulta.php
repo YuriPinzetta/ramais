@@ -4,6 +4,12 @@ include "../lib/Contato.php";
 include "../lib/ContatoDAO.php";
 include "../lib/Ramal.php";
 include "../lib/RamalDAO.php";
+
+use amixsi\ContatoDAO;
+use amixsi\Contato;
+use amixsi\Ramal;
+use amixsi\RamalDAO;
+
 session_start();
 $ulog = usuarioLogado();
 if (!$ulog) {
@@ -11,10 +17,10 @@ if (!$ulog) {
 }
 $pdo = db();
 $contatoDAO = new ContatoDAO($pdo);
-$todos_contatos = $contatosDAO->listar(array());
+$todos_contatos = $contatoDAO->listar(array());
 $contato_selecionado = null;
 if (isset($_GET['id_contato'])) {
-    $contatos = $contatosDAO->listar($_GET);
+    $contatos = $contatoDAO->listar($_GET);
     $contato_selecionado = $_GET['id_contato'];
 }
 $todos_cargos = listarCargos(array(), $pdo);

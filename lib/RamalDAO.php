@@ -35,11 +35,11 @@ class RamalDAO
 
     public function listar($ramal)
     {
-        $id_contato = $ramal->setIdcontato;
+        $id_contato = $ramal['id_contato'];
         $tipos = isset($ramal->setTipo) ? $ramal->setTipo : null;
         $stmt = $this->pdo->prepare("select   id, ramal, tipo from ramal where id_contato = '$id_contato'
             " . ($tipos ? "and tipo = '$tipos'" : "") . "
-        ");
+            ");
         $stmt->execute(array(':id_contato' => $id_contato, ':tipos' => $tipos));
         $ramais = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         return $ramais;
