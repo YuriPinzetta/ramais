@@ -1,7 +1,7 @@
 <?php
 function db()
 {
-    $dsn = 'mysql:host=localhost;dbname=ramais';
+    $dsn='mysql:host=localhost;dbname=ramais';
     $username='yuri'; // Indique o nome do usuÃ¡rio que tem acesso
     $password='Pinzetta'; // Indique a senha do usuÃ¡rio
     try {
