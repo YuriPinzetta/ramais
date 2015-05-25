@@ -8,9 +8,9 @@ use amixsi\Contato;
 
 session_start();
 $ulog = usuarioLogado();
-if (!$ulog) {
+/*if (!$ulog) {
     return header("Location: login.php");
-}
+}*/
 if (isset($_POST['Enviar'])) {
     try {
         $contato = Contato::fromArray($_POST);
