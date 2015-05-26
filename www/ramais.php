@@ -12,7 +12,9 @@ if (!$ulog) {
     return header("Location: login.php");
 }
 $pdo = db();
-$contatos = listarContatos(array(), $pdo);
+$contatoDao = new RamalDAO($pdo);
+$contatoDao->listarContatos(array());
+$contatos = $contatoDao;
 if (isset($_POST['Enviar'])) {
     try {
         $ramal = Ramal::fromArray($_POST);

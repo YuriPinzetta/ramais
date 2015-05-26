@@ -13,7 +13,7 @@ function db()
     }
     return $pdo;
 }
-
+/*
 function listarContatos(array $params, $pdo)
 {
     $id_contato = !empty($params['id_contato']) ? $params['id_contato'] : null;
@@ -47,7 +47,7 @@ function listarContatos(array $params, $pdo)
         }
     }
     return $contatos_return;
-}
+}*/
 function listarCargos(array $params, $pdo)
 {
     $stmt = $pdo->prepare("select distinct cargos from contato");
@@ -122,7 +122,7 @@ function cadastraUsuario(array $params, $pdo)
 {
     $ilogin = $params['usuario'];
     $isenha = md5($params['senha'].".AMIX");
-    $stmt = $pdo->prepare("INSERT INTO 'ramais'.'usuario' ('login', `senha`) 
+    $stmt = $pdo->prepare("INSERT INTO usuario (login, senha) 
                             VALUES (:ilogin, :isenha);");
     $stmt->execute(array(':ilogin' => $ilogin, 'isenha' => $isenha));
 }
