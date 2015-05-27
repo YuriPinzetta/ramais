@@ -17,10 +17,10 @@ if (!$ulog) {
 }
 $pdo = db();
 $contatoDAO = new RamalDAO($pdo);
-$todos_contatos = $contatoDAO->listar(array());
+$todos_contatos = $contatoDAO->listarContatos(array());
 $contato_selecionado = null;
 if (isset($_GET['id_contato'])) {
-    $contatos = $contatoDAO->listar($_GET);
+    $contatos = $contatoDAO->listarContatos($_GET);
     $contato_selecionado = $_GET['id_contato'];
 }
 $todos_cargos = listarCargos(array(), $pdo);

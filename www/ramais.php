@@ -13,8 +13,7 @@ if (!$ulog) {
 }
 $pdo = db();
 $contatoDao = new RamalDAO($pdo);
-$contatoDao->listarContatos(array());
-$contatos = $contatoDao;
+$contatos = $contatoDao->listarContatos(array());
 if (isset($_POST['Enviar'])) {
     try {
         $ramal = Ramal::fromArray($_POST);
