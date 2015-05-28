@@ -32,44 +32,20 @@ class RamalDAO
 		 ':tipos' => $tipos, 'ramal' => $ramais));
 		header("Location: index.php");
 	}
-	public function listar($ramal)
+	public function listar(array $params)
 	{
-		$id_contato = $ramal['id_contato'];
-		$tipos = isset($ramal->setTipo) ? $ramal->setTipo : null;
-		$stmt = $this->pdo->prepare("select id, ramal, tipo from ramal where id_contato = '$id_contato'
-			" . ($tipos ? "and tipo = '$tipos'" : "") . "
+		$id_contato = $params['id_contato'];
+		$tipos = isset($params['tipos']) ? $params['tipos'] : null;
+		$stmt = $this->pdo->prepare("select id_contato, id, ramal, tipo from ramal where id_contato = :id_contato
+			" . ($tipos ? "and tipo = :tipos" : "") . "
 		");
-		$stmt->execute(array(':id_contato' => $id_contato, ':tipos' => $tipos));
+		$binds = array(':id_contato' => $id_contato);
+		if ($tipos) {
+						$binds[':tipos'] = $tipos;
+		}
+		$stmt->execute($binds);
 		$ramais = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-		return $ramais;
-	}
-	public function listarContatos(array $params)
-	{
-		$id_contato = !empty($params['id_contato']) ? $params['id_contato'] : null;
-		$tipos = !empty($params['tipos']) ? $params['tipos'] : null;
-		$cargos = !empty($params['cargos']) ? $params['cargos'] : null;
-		$filtros = array();
-		if ($id_contato !== null) {
-			$filtros[] = "id = $id_contato";
-		}
-		if ($cargos !== null) {
-			$filtros[] = "cargos = '$cargos'";
-		}
-		$stmt = $this->pdo->prepare("select id,	cargos, contato	from contato" . (count($filtros) > 0 ? ' where ' . implode(' and ', $filtros) : '') . "");
-		$stmt->execute();
-		$contatos_foreach = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-		$contatos_return = array();
-	 	foreach ($contatos_foreach as $contato) {
-			$params = array(
-					'id_contato' => $contato['id'],
-					'tipos' => $tipos
-			);
-			$ramais = $this->listar($ramal);
-			$contato['ramais'] = $ramais;
-			if ($tipos === null || count($ramais) > 0) {
-			$contatos_return[] = $contato;
-		 }
-		}
-		return $contatos_return;
+		return Ramal::fromArray($ramais);
+		//return $ramais;
 	}
 }

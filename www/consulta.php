@@ -16,14 +16,18 @@ if (!$ulog) {
     return header("Location: login.php");
 }
 $pdo = db();
-$contatoDAO = new RamalDAO($pdo);
-$todos_contatos = $contatoDAO->listarContatos(array());
+
+$ramalDao = new RamalDAO($pdo);
+$contatoDao = new ContatoDAO($pdo, $ramalDao);
+$todos_contatos = $contatoDao->listar(array());
+
+//$todos_contatos = $contatoDAO->listarContatos(array());
 $contato_selecionado = null;
 if (isset($_GET['id_contato'])) {
-    $contatos = $contatoDAO->listarContatos($_GET);
+    $contatos = $contatoDao->listar($_GET);
     $contato_selecionado = $_GET['id_contato'];
 }
-$todos_cargos = listarCargos(array(), $pdo);
+$todos_cargos = $contatoDao->listarCargos(array());
 $cargo_selecionado = null;
 if (isset($_GET['cargos'])) {
     $cargo_selecionado = $_GET['cargos'];
@@ -112,8 +116,8 @@ $todos_tipos = array(
 							<td><?=$contato['cargos']?></td>
 							<td>
 								<ul>
-								<?php foreach ($contato['ramais'] as $ramal) { ?>
-									<li><?=$ramal['tipo']?> - <?=$ramal['ramal']?></li>
+								<?php foreach ($contato['ramais'] as $ramais) {	?>
+									<li><?=$ramais->getTipo() ?> - <?=$ramais->getNumero() ?></li>
 								<?php } ?>
 								</ul>
 							</td>

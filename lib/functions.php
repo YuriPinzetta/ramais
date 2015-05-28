@@ -13,48 +13,6 @@ function db()
     }
     return $pdo;
 }
-/*
-function listarContatos(array $params, $pdo)
-{
-    $id_contato = !empty($params['id_contato']) ? $params['id_contato'] : null;
-    $tipos = !empty($params['tipos']) ? $params['tipos'] : null;
-    $cargos = !empty($params['cargos']) ? $params['cargos'] : null;
-    $filtros = array();
-    if ($id_contato !== null) {
-        $filtros[] = "id = $id_contato";
-    }
-    if ($cargos !== null) {
-        $filtros[] = "cargos = '$cargos'";
-    }
-    $stmt = $pdo->prepare("
-    select id,
-    cargos,
-    contato 
-    from contato" . (count($filtros) > 0 ? 'where ' . implode(' and ', $filtros) : '') . "
-    ");
-    $stmt->execute();
-    $contatos_foreach = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    $contatos_return = array();
-    foreach ($contatos_foreach as $contato) {
-        $params = array(
-            'id_contato' => $contato['id'],
-            'tipos' => $tipos
-        );
-        $ramais = listar($ramal);
-        $contato['ramais'] = $ramais;
-        if ($tipos === null || count($ramais) > 0) {
-            $contatos_return[] = $contato;
-        }
-    }
-    return $contatos_return;
-}*/
-function listarCargos(array $params, $pdo)
-{
-    $stmt = $pdo->prepare("select distinct cargos from contato");
-    $stmt->execute();
-    $cargos = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    return $cargos;
-}
 function alteraContato(array $params, array $ramais, $pdo)
 {
     $contatos = $params['contato'];

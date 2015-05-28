@@ -1,8 +1,12 @@
 <?php
 include "../lib/functions.php";
+include "../lib/Contato.php";
+include "../lib/ContatoDAO.php";
 include "../lib/Ramal.php";
 include "../lib/RamalDAO.php";
 
+use amixsi\Contato;
+use amixsi\ContatoDAO;
 use amixsi\RamalDAO;
 use amixsi\Ramal;
 
@@ -12,9 +16,11 @@ if (!$ulog) {
     return header("Location: login.php");
 }
 $pdo = db();
-$contatoDao = new RamalDAO($pdo);
-$contatos = $contatoDao->listarContatos(array());
+$ramalDao = new RamalDAO($pdo);
+$contatoDao = new ContatoDAO($pdo, $ramalDao);
+$contatos = $contatoDao->listar(array());
 if (isset($_POST['Enviar'])) {
+		$_POST['id'] = ""; 
     try {
         $ramal = Ramal::fromArray($_POST);
     } catch (Exception $ex) {
@@ -22,8 +28,7 @@ if (isset($_POST['Enviar'])) {
         echo $ex->getMessage();
         return;
     }
-    $ramalDAO = new RamalDAO($pdo);
-    $ramalDAO->inserir($ramal);
+    $ramalDao->inserir($ramal);
 }
 ?>
 <!DOCTYPE html>
@@ -44,7 +49,7 @@ if (isset($_POST['Enviar'])) {
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label>Tipos :</label>
-                                <select class="form-control" name="tipos">
+                                <select class="form-control" name="tipo">
                                     <option value="Interno">Interno</option>
                                     <option value="Casa">Casa</option>
                                     <option value="Celular">Celular</option>

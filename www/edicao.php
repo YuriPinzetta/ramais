@@ -3,9 +3,12 @@ include "../lib/functions.php";
 include "../lib/Contato.php";
 include "../lib/ContatoDAO.php";
 include "../lib/Ramal.php";
+include "../lib/RamalDAO.php";
 
 use amixsi\ContatoDAO;
 use amixsi\Contato;
+use amixsi\Ramal;
+use amixsi\RamalDAO;
 
 session_start();
 $ulog = usuarioLogado();
@@ -48,10 +51,10 @@ if (isset($_POST['deletaContato'])) {
         return header('Location: index.php');
     }
 }
-$contatoDAO = new ContatoDAO($pdo);
-$contato = $contatoDAO->consulta($_GET['id_contato']);
-$ramalDAO = new ramalDAO($pdo);
-$ramais = $ramalDAO->listar($pdo);
+$ramalDao = new ramalDAO($pdo);
+$contatoDao = new ContatoDAO($pdo, $ramalDao);
+$contato = $contatoDao->consulta($_GET['id_contato']);
+$ramais = $ramalDao->listar($_GET);
 $todos_tipos = array(
     "Interno",
     "Casa",
@@ -108,14 +111,14 @@ $todos_tipos = array(
 						</div>
 					</div>
 					<?php foreach ($ramais as $ramal) { ?>
-					<input type="hidden" name="ramal_id[]" value="<?php echo $ramal['id']?>" />
+					<input type="hidden" name="ramal_id[]" value="<?php echo $ramal->getId() ?>" />
 					<div class="row">
 						<div class="col-md-3">
 							<div class="form-group">
 								<label>Tipos :</label>
 								<select class="form-control" name="tipos[]">
 									<?php foreach ($todos_tipos as $tipos) { ?>
-										<option value="<?=$tipos?>" <?=($ramal['tipo'] == $tipos ? 'selected' : '')?>><?=$tipos?></option>
+										<option value="<?=$tipos?>" <?=($ramal->getTipo() == $tipos ? 'selected' : '')?>><?=$tipos?></option>
 									<?php } ?>
 								</select>
 							</div>
@@ -123,7 +126,7 @@ $todos_tipos = array(
 						<div class="col-md-3">
 							<div class="form-group">
 								<label>Ramal :</label>
-								<input type="text" id="input-ramal" name="ramal[]" value="<?php echo $ramal['ramal']?>" class="form-control" autofocus autocomplete="off"/>
+								<input type="text" id="input-ramal" name="ramal[]" value="<?php echo $ramal->getNumero() ?>" class="form-control" autofocus autocomplete="off"/>
 							</div>
 						</div>
 					</div>
