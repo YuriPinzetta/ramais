@@ -45,7 +45,35 @@ class RamalDAO
 		}
 		$stmt->execute($binds);
 		$ramais = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-		return Ramal::fromArray($ramais);
-		//return $ramais;
+		$ramaisObj = array();
+		foreach ($ramais as $ramal) {
+						$ramaisObj[] = Ramal::fromArray($ramal);
+		}
+		return $ramaisObj;
+	}
+	public function altera($id_contato, array $ramais)
+	{
+		foreach ($ramais as $ramal) {
+			self::alteraRamal($id_contato, $ramal);
+		}
+	}
+	public function alteraRamal($id_contato, array $params)
+	{
+		$tipos = $params['tipos'];
+		$ramal = $params['ramal'];
+		$id = $params['id'];
+		$stmt = $this->pdo->prepare("update ramal set tipo = :tipos, ramal = :ramal WHERE id_contato = :id_contato and id = :id");
+		if($stmt->execute(array(':tipos' => $tipos,':ramal' => $ramal,':id_contato' => $id_contato, ':id' => $id)) == true){
+			header("Location: index.php");
+		}else{
+    	echo "<script>alert ('Não houve alteração no banco, tente novamente.')</script>";
+		}
+	}
+	function deleta(array $params)
+	{
+		$id = $params['id_contato'];
+		$stmt = $this->pdo->prepare("delete from ramal WHERE id_contato = :id");
+		$stmt->execute(array(':id' => $id));
+		header("Location: index.php");
 	}
 }

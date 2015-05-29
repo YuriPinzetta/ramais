@@ -4,18 +4,25 @@ include "../lib/Contato.php";
 include "../lib/ContatoDAO.php";
 include "../lib/Ramal.php";
 include "../lib/RamalDAO.php";
+include "../lib/Usuario.php";
+include "../lib/UsuarioDAO.php";
 
+use amixsi\Usuario;
+use amixsi\UsuarioDAO;
 use amixsi\ContatoDAO;
 use amixsi\Contato;
 use amixsi\RamalDAO;
 use amixsi\Ramal;
 
 session_start();
-$ulog = usuarioLogado();
+$pdo = db();
+
+$usuarioDao = new UsuarioDAO($pdo);
+$ulog = $usuarioDao->logado();
+
 if (!$ulog) {
     return header("Location: login.php");
 }
-$pdo = db();
 
 $ramalDao = new RamalDAO($pdo);
 $contatoDao = new ContatoDAO($pdo, $ramalDao);

@@ -1,9 +1,16 @@
 <?php
 include "../lib/functions.php";
+include "../lib/Usuario.php";
+include "../lib/UsuarioDAO.php";
+
+use amixsi\UsuarioDAO;
+use amixsi\usuario;
+
 session_start();
 if (isset($_POST['logar'])) {
-    $pdo = db();
-    validaUsuario($_POST, $pdo);
+		$pdo = db();
+		$usuarioDao = new UsuarioDAO($pdo);
+    $usuarioDao->valida($_POST);
 }
 ?>
 <!DOCTYPE html>

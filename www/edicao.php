@@ -4,18 +4,27 @@ include "../lib/Contato.php";
 include "../lib/ContatoDAO.php";
 include "../lib/Ramal.php";
 include "../lib/RamalDAO.php";
+include "../lib/Usuario.php";
+include "../lib/UsuarioDAO.php";
 
+use amixsi\Usuario;
+use amixsi\UsuarioDAO;
 use amixsi\ContatoDAO;
 use amixsi\Contato;
 use amixsi\Ramal;
 use amixsi\RamalDAO;
 
 session_start();
-$ulog = usuarioLogado();
+$pdo = db();
+
+$usuarioDao = new UsuarioDAO($pdo);
+$ulog = $usuarioDao->logado();
+
 if (!$ulog) {
     return header("Location: login.php");
 }
-$pdo = db();
+$ramalDao = new ramalDAO($pdo);
+$contatoDao = new ContatoDAO($pdo, $ramalDao);
 $ramais = array();
 if (isset($_POST['Alterar'])) {
     $contato = array(
@@ -33,13 +42,13 @@ if (isset($_POST['Alterar'])) {
             $ramais[] = $ramal;
         }
     }
-    alteraContato($contato, $ramais, $pdo);
+		$contatoDao->altera($contato, $ramais);
 }
 if (isset($_POST['deletaRamais'])) {
     $contato = array(
         'id_contato' => $_GET['id_contato']
     );
-    if (deletaRamal($contato, $pdo)) {
+    if ($ramalDao->deleta($contato)) {
         return header('Location: index.php');
     }
 }
@@ -47,12 +56,10 @@ if (isset($_POST['deletaContato'])) {
     $contato = array(
         'id_contato' => $_GET['id_contato']
     );
-    if (deletaRamal($contato, $pdo) && deletaContato($contato, $pdo)) {
+    if ($ramalDao->deleta($contato) && $contatoDao->deleta($contato)) {
         return header('Location: index.php');
     }
 }
-$ramalDao = new ramalDAO($pdo);
-$contatoDao = new ContatoDAO($pdo, $ramalDao);
 $contato = $contatoDao->consulta($_GET['id_contato']);
 $ramais = $ramalDao->listar($_GET);
 $todos_tipos = array(

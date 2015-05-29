@@ -1,9 +1,16 @@
 <?php
 include "../lib/functions.php";
+include "../lib/Usuario.php";
+include "../lib/UsuarioDAO.php";
+
+use amixsi\UsuarioDAO;
+use amixsi\usuario;
+
 session_start();
 if (isset($_POST['cadastrar']) && $_POST['cadastrar'] == 'cadastrar') {
     $pdo = db();
-    verificaUsuario($_POST, $pdo);
+		$usuarioDao = new UsuarioDAO($pdo);
+    $usuarioDao->verifica($_POST);
 }
 ?>
 <!DOCTYPE html>

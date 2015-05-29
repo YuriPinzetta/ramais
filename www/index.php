@@ -1,7 +1,17 @@
 <?php
 include("../lib/functions.php");
+include("../lib/Usuario.php");
+include("../lib/UsuarioDAO.php");
+
+use amixsi\Usuario;
+use amixsi\UsuarioDAO;
+
 session_start();
-$ulog = usuarioLogado();
+
+$pdo =db();
+$usuarioDao = new UsuarioDAO($pdo);
+$ulog = $usuarioDao->logado();
+
 if (!$ulog) {
     return header("Location: login.php");
 }

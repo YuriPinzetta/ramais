@@ -19,13 +19,15 @@ class Ramal
 					if (empty($dado['ramal'])) {
 						throw new Exception('Ramal não preenchido');
 					}
+					/*if(array_key_exists('id', $dado)) $id = $dado['id'];
+					else $id = "";*/	
 					$ramal[] = new Ramal($dado['tipo'], $dado['id_contato'], $dado['ramal'], $dado['id']);
 				}
 			} else
 			{
-					if (empty($dados['ramal'])) {
-						throw new Exception('Ramal não preenchido');
-					}
+					/*if(array_key_exists('id', $dados)) $id = $dados['id'];
+else $id = "";*/
+					//var_dump($dados);	
 					$ramal = new Ramal($dados['tipo'], $dados['id_contato'], $dados['ramal'], $dados['id']);
 			}
 				return $ramal;

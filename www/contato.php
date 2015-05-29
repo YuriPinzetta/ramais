@@ -2,15 +2,23 @@
 include "../lib/functions.php";
 include "../lib/Contato.php";
 include "../lib/ContatoDAO.php";
+include "../lib/Usuario.php";
+include "../lib/UsuarioDAO.php";
 
+use amixsi\Usuario;
+use amixsi\UsuarioDAO;
 use amixsi\ContatoDAO;
 use amixsi\Contato;
 
 session_start();
-$ulog = usuarioLogado();
-/*if (!$ulog) {
+$pdo = db();
+
+$usuarioDao = new UsuarioDAO($pdo);
+$ulog = $usuarioDao->logado();
+
+if (!$ulog) {
     return header("Location: login.php");
-}*/
+}
 if (isset($_POST['Enviar'])) {
     try {
         $contato = Contato::fromArray($_POST);
@@ -19,7 +27,6 @@ if (isset($_POST['Enviar'])) {
         echo $ex->getMessage();
         return;
     }
-    $pdo = db();
     $contatoDao = new ContatoDAO($pdo);
     $contatoDao->inserir($contato);
     return header("Location: index.php");

@@ -64,4 +64,20 @@ class ContatoDAO
     	$cargos = $stmt->fetchAll(\PDO::FETCH_ASSOC);
     	return $cargos;
 		}
+		function altera(array $params, array $ramais)
+		{
+			$contatos = $params['contato'];
+			$cargos = $params['cargos'];
+			$id = $params['id_contato'];
+			$stmt = $this->pdo->prepare("update contato set contato=:contatos, cargos=:cargos WHERE id = :id");
+			$stmt->execute(array(':contatos' => $contatos,':cargos' => $cargos,':id' => $id));
+			$ramais = $this->ramalDao->altera($id, $ramais);
+		}
+		function deleta(array $params)
+		{
+			$id = $params['id_contato'];
+			$stmt = $this->pdo->prepare("delete from contato WHERE id = :id");
+			$stmt->execute(array(':id' => $id));
+			header("Location: index.php");
+		}
 }
