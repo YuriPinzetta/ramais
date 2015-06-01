@@ -74,6 +74,6 @@ class RamalDAO
 		$id = $params['id_contato'];
 		$stmt = $this->pdo->prepare("delete from ramal WHERE id_contato = :id");
 		$stmt->execute(array(':id' => $id));
-		header("Location: index.php");
+		return true;
 	}
 }

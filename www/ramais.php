@@ -69,7 +69,7 @@ if (isset($_POST['Enviar'])) {
                                 <label>Contato :</label>
                                 <select class="form-control" name="id_contato">
                                 <?php foreach ($contatos as $contato) { ?>
-                                    <option value="<?php echo $contato['id'] ?>"><?php echo $contato['contato'] ?>
+                                    <option value="<?php echo $contato->getId() ?>"><?php echo $contato->getNome() ?>
                                     </option>
                             <?php } ?>
                                 </select>

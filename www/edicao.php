@@ -44,21 +44,31 @@ if (isset($_POST['Alterar'])) {
     }
 		$contatoDao->altera($contato, $ramais);
 }
+if(isset($_POST['deletaRamais'])){
+}
 if (isset($_POST['deletaRamais'])) {
-    $contato = array(
-        'id_contato' => $_GET['id_contato']
-    );
+		$contato = array(
+			'id_contato' => $_GET['id_contato']
+		);
     if ($ramalDao->deleta($contato)) {
-        return header('Location: index.php');
+			return header('Location: index.php');
     }
 }
 if (isset($_POST['deletaContato'])) {
-    $contato = array(
-        'id_contato' => $_GET['id_contato']
-    );
-    if ($ramalDao->deleta($contato) && $contatoDao->deleta($contato)) {
-        return header('Location: index.php');
-    }
+		$contato = array(
+			'id_contato' => $_GET['id_contato']
+		);
+		try {
+			$pdo->beginTransaction();	
+			$ramalDao->deleta($contato);
+			$contatoDao->deleta($contato);
+			$pdo->commit();
+    	return header('Location: index.php');
+		} catch(Exception $e) {
+			$pdo->rollBack();
+			trigger_error($e->getTraceAsString());
+			return header('Location: index.php?error=1');
+		}
 }
 $contato = $contatoDao->consulta($_GET['id_contato']);
 $ramais = $ramalDao->listar($_GET);

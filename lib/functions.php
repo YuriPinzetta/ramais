@@ -10,7 +10,7 @@ function db()
     $password='Pinzetta'; // Indique a senha do usuÃ¡rio
     try {
         $pdo = new PDO($dsn, $username, $password);
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+				$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } catch (PDOException $ex) {
         trigger_error($ex->getTraceAsString());
         throw $ex;

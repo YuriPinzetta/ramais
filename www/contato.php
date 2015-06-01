@@ -4,11 +4,15 @@ include "../lib/Contato.php";
 include "../lib/ContatoDAO.php";
 include "../lib/Usuario.php";
 include "../lib/UsuarioDAO.php";
+include "../lib/Ramal.php";
+include "../lib/RamalDAO.php";
 
 use amixsi\Usuario;
 use amixsi\UsuarioDAO;
 use amixsi\ContatoDAO;
 use amixsi\Contato;
+use amixsi\Ramal;
+use amixsi\RamalDAO;
 
 session_start();
 $pdo = db();
@@ -20,14 +24,15 @@ if (!$ulog) {
     return header("Location: login.php");
 }
 if (isset($_POST['Enviar'])) {
-    try {
-        $contato = Contato::fromArray($_POST);
+		try {
+			$_POST['id']="";					
+      $contato = Contato::fromArray($_POST);
     } catch (Exception $ex) {
         header("HTTP/1.1 404 Bad Request");
         echo $ex->getMessage();
         return;
     }
-    $contatoDao = new ContatoDAO($pdo);
+    $contatoDao = new ContatoDAO($pdo, $ramalDao);
     $contatoDao->inserir($contato);
     return header("Location: index.php");
 }

@@ -24,7 +24,7 @@ class ContatoDAO
     {
         $stmt = $this->pdo->prepare('select id, contato, cargos from contato WHERE id = :id');
         $stmt->execute(array(':id' => $id));
-        $contato = $stmt->fetch(\PDO::FETCH_ASSOC);
+				$contato = $stmt->fetch(\PDO::FETCH_ASSOC);
         return Contato::fromArray($contato);
     }
 
@@ -52,7 +52,7 @@ class ContatoDAO
 						$ramais = $this->ramalDao->listar($params);
 						$contato['ramais'] = $ramais;
 						if ($tipos === null || count($ramais) > 0) {
-								$contatos_return[] = $contato;
+								$contatos_return[] = Contato::fromArray($contato);
 						}
 				}
 				return $contatos_return;
@@ -78,6 +78,6 @@ class ContatoDAO
 			$id = $params['id_contato'];
 			$stmt = $this->pdo->prepare("delete from contato WHERE id = :id");
 			$stmt->execute(array(':id' => $id));
-			header("Location: index.php");
+			return true;
 		}
 }

@@ -23,6 +23,11 @@ if (!$ulog) {
 		</head>
 		<body>
 			<?php include 'menu.php'?>
+			<?php if (isset($_GET['error'])) { ?>
+			<div class="row">
+						<div class="col-md-12">Ocorreu um erro na execução</div>
+			</div>
+			<?php } ?>
 				<div class="row">
 					<div class="form-group">
 						<div class="col-md-4">

@@ -67,7 +67,7 @@ $todos_tipos = array(
 								<select class="form-control" name="id_contato">
 									<option value="">Todos</option>
 									<?php foreach ($todos_contatos as $contato) { ?>
-										<option value="<?php echo $contato['id'] ?>" <?=$contato['id'] == $contato_selecionado ? 'selected' : ''?>><?php echo $contato['contato'] ?></option>
+										<option value="<?php echo $contato->getId() ?>" <?=$contato->getId() == $contato_selecionado ? 'selected' : ''?>><?php echo $contato->getNome() ?></option>
 									<?php } ?>
 								</select>
 							</div>
@@ -112,19 +112,19 @@ $todos_tipos = array(
 							<th>Tipo / Ramal</th>
 						</tr>
 						<?php foreach ($contatos as $contato) {
-							$href = 'edicao.php?id_contato=' . $contato['id'];
+							$href = 'edicao.php?id_contato=' . $contato->getId();
 						?>
 						<tr>
 							<td>
 								<a href="<?=$href?>">
-									<span class="glyphicon glyphicon-edit" aria-hidden="true"> <?=$contato['contato']?></span>
+									<span class="glyphicon glyphicon-edit" aria-hidden="true"> <?=$contato->getNome()?></span>
 								</a>
 							</td>
-							<td><?=$contato['cargos']?></td>
+							<td><?=$contato->getCargo()?></td>
 							<td>
 								<ul>
-								<?php foreach ($contato['ramais'] as $ramais) {	?>
-									<li><?=$ramais->getTipo() ?> - <?=$ramais->getNumero() ?></li>
+								<?php foreach ($contato->getRamais() as $ramal) {	?>
+									<li><?=$ramal->getTipo() ?> - <?=$ramal->getNumero() ?></li>
 								<?php } ?>
 								</ul>
 							</td>
