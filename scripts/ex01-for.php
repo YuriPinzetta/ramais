@@ -6,16 +6,23 @@ function string_position($texto, $parte) {
 	$tmhP = strlen($parte);
 	$numero = 0;
 	for($i = 0; $i < $tmhT; $i++){
+		printf("{i: %d, texto{i}: %s, numero: %d, parte{numero}: %s}\n", $i, $texto{$i}, $numero, $parte{$numero});
 		if($texto{$i} == $parte{$numero}){
-			for($num = $numero; $num < $tmhP; $num++){
-				if($texto{$i} == $parte{$num}){
-					printf("Resultato: %s\n", $texto{$i});
-				}else{
+			for($am = $i; $am < $tmhT && $numero < $tmhP; $am++){
+				printf("{am: %d, texto{am}: %s, numero: %d, parte{numero}: %s}\n", $am, $texto{$am}, $numero, $parte{$numero});
+				if($texto{$am} != $parte{$numero}){
 					break;
 				}
+				$numero++;
+			}				
+			printf("{numero: %d, tmhP: %d}\n", $numero, $tmhP);
+			if ($numero == $tmhP) {
+				return $i;
 			}
-		}				
+			return false;
+		}
 	}
+	return false;
 }
 // encontrar a posição da primeira letra no $texto
 // checar se a partir da posição encontrada todas as letras são iguais a $parte
@@ -23,6 +30,11 @@ function string_position($texto, $parte) {
 /*$parte = stripos($texto, $parte);
 return $parte;
 return $texto;*/
+			/*for($num = $numero; $num < $tmhP; $num++){
+				if($texto{$i} == $parte{$num}){
+				}else{
+				}
+			}*/
 
 
 $ret1 = string_position('Yuri Pinzetta', 'zetta') === 8;
