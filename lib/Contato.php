@@ -18,9 +18,9 @@ class Contato
             throw new Exception('Cargos não preenchido');
         }
         $contato = new Contato($dados['contato'], $dados['cargos'], $dados['id']);
-				if (isset($dados['ramais'])) {
-								$contato->setRamais($dados['ramais']);
-				}
+        if (isset($dados['ramais'])) {
+            $contato->setRamais($dados['ramais']);
+        }
         return $contato;
     }
 
@@ -72,9 +72,9 @@ class Contato
                 $this->ramais[] = $ramal;
             }
         }
-		}
-		public function getRamais()
-		{
-			return $this->ramais;
-		}
+    }
+    public function getRamais()
+    {
+        return $this->ramais;
+    }
 }

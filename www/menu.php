@@ -1,15 +1,15 @@
 <?php
-	include_once "../lib/functions.php";
-	include_once "../lib/Usuario.php";
-	include_once "../lib/UsuarioDAO.php";
+    include_once "../lib/functions.php";
+    include_once "../lib/Usuario.php";
+    include_once "../lib/UsuarioDAO.php";
 
-	use amixsi\UsuarioDAO;
-	use amixsi\usuario;
-  
-	$pdo = db();
-	$usuarioDao = new UsuarioDAO($pdo);
+    use amixsi\UsuarioDAO;
+    use amixsi\usuario;
+
+    $pdo = db();
+    $usuarioDao = new UsuarioDAO($pdo);
   $logado = $usuarioDao->logado();
-?>	
+?>
 			<div class="container">
 				<div class="row">
 					<nav class="navbar navbar-default">
@@ -22,15 +22,19 @@
 									<span class="icon-bar"></span>
 								</button>
 								<a class="navbar-brand" href="index.php">AMIX</a>
-								<?php if ($logado){ ?>
+								<?php if ($logado) {
+    ?>
 									<p class="navbar-text">Bem-vindo, <?=$_SESSION['usuario']?></p>
-								<?php } ?>
+								<?php 
+} ?>
 							</div>
-							<?php if($logado){ ?>
+							<?php if ($logado) {
+    ?>
 							<a href="sair.php">
 								<button name="botao" type="submit" class="btn btn-default navbar-btn navbar-right">Sair</button>
 							</a>
-							<?php } ?>
+							<?php 
+} ?>
 						</div>
 					</nav>
 				</div>

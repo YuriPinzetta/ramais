@@ -9,7 +9,7 @@ use amixsi\usuario;
 session_start();
 if (isset($_POST['cadastrar']) && $_POST['cadastrar'] == 'cadastrar') {
     $pdo = db();
-		$usuarioDao = new UsuarioDAO($pdo);
+    $usuarioDao = new UsuarioDAO($pdo);
     $usuarioDao->verifica($_POST);
 }
 ?>

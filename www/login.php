@@ -8,8 +8,8 @@ use amixsi\usuario;
 
 session_start();
 if (isset($_POST['logar'])) {
-		$pdo = db();
-		$usuarioDao = new UsuarioDAO($pdo);
+    $pdo = db();
+    $usuarioDao = new UsuarioDAO($pdo);
     $usuarioDao->valida($_POST);
 }
 ?>
@@ -47,7 +47,7 @@ if (isset($_POST['logar'])) {
 						<div class="col-md-2">
 							<div class="form-group">
 								<a href="cadastro.php">
-									<input name="cadastre-se" type="button" value="cadastre-se" 
+									<input name="cadastre-se" type="button" value="cadastre-se"
                                         class="form-control botao"/>
 								</a>
 							</div>

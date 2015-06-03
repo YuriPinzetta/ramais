@@ -42,33 +42,33 @@ if (isset($_POST['Alterar'])) {
             $ramais[] = $ramal;
         }
     }
-		$contatoDao->altera($contato, $ramais);
-}
-if(isset($_POST['deletaRamais'])){
+    $contatoDao->altera($contato, $ramais);
 }
 if (isset($_POST['deletaRamais'])) {
-		$contato = array(
-			'id_contato' => $_GET['id_contato']
-		);
+}
+if (isset($_POST['deletaRamais'])) {
+    $contato = array(
+            'id_contato' => $_GET['id_contato']
+        );
     if ($ramalDao->deleta($contato)) {
-			return header('Location: index.php');
+        return header('Location: index.php');
     }
 }
 if (isset($_POST['deletaContato'])) {
-		$contato = array(
-			'id_contato' => $_GET['id_contato']
-		);
-		try {
-			$pdo->beginTransaction();	
-			$ramalDao->deleta($contato);
-			$contatoDao->deleta($contato);
-			$pdo->commit();
-    	return header('Location: index.php');
-		} catch(Exception $e) {
-			$pdo->rollBack();
-			trigger_error($e->getTraceAsString());
-			return header('Location: index.php?error=1');
-		}
+    $contato = array(
+            'id_contato' => $_GET['id_contato']
+        );
+    try {
+        $pdo->beginTransaction();
+        $ramalDao->deleta($contato);
+        $contatoDao->deleta($contato);
+        $pdo->commit();
+        return header('Location: index.php');
+    } catch (Exception $e) {
+        $pdo->rollBack();
+        trigger_error($e->getTraceAsString());
+        return header('Location: index.php?error=1');
+    }
 }
 $contato = $contatoDao->consulta($_GET['id_contato']);
 $ramais = $ramalDao->listar($_GET);
@@ -113,7 +113,7 @@ $todos_tipos = array(
 						<div class="col-md-3">
 							<div class="form-group">
 								<label>Nome do Contato :</label>
-										<input type="text"	class="form-control" autocomplete="off" name="contato" 
+										<input type="text"	class="form-control" autocomplete="off" name="contato"
                                             id="input_contato" value="<?php echo $contato->getNome() ?>">
                                         </input>
 							</div>
@@ -127,16 +127,20 @@ $todos_tipos = array(
 							</div>
 						</div>
 					</div>
-					<?php foreach ($ramais as $ramal) { ?>
+					<?php foreach ($ramais as $ramal) {
+    ?>
 					<input type="hidden" name="ramal_id[]" value="<?php echo $ramal->getId() ?>" />
 					<div class="row">
 						<div class="col-md-3">
 							<div class="form-group">
 								<label>Tipos :</label>
 								<select class="form-control" name="tipos[]">
-									<?php foreach ($todos_tipos as $tipos) { ?>
+									<?php foreach ($todos_tipos as $tipos) {
+    ?>
 										<option value="<?=$tipos?>" <?=($ramal->getTipo() == $tipos ? 'selected' : '')?>><?=$tipos?></option>
-									<?php } ?>
+									<?php 
+}
+    ?>
 								</select>
 							</div>
 						</div>
@@ -147,7 +151,8 @@ $todos_tipos = array(
 							</div>
 						</div>
 					</div>
-					<?php } ?>
+					<?php 
+} ?>
 					<div class="row">
 						<div class="col-md-2">
 							<div class="form-group">

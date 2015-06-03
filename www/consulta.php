@@ -66,9 +66,11 @@ $todos_tipos = array(
 								<label>Contato :</label>
 								<select class="form-control" name="id_contato">
 									<option value="">Todos</option>
-									<?php foreach ($todos_contatos as $contato) { ?>
+									<?php foreach ($todos_contatos as $contato) {
+    ?>
 										<option value="<?php echo $contato->getId() ?>" <?=$contato->getId() == $contato_selecionado ? 'selected' : ''?>><?php echo $contato->getNome() ?></option>
-									<?php } ?>
+									<?php 
+} ?>
 								</select>
 							</div>
 						</div>
@@ -77,9 +79,11 @@ $todos_tipos = array(
 								<label>Cargos :</label>
 								<select class="form-control" name="cargos">
 									<option value="">Todos</option>
-									<?php foreach ($todos_cargos as $cargo) { ?>
+									<?php foreach ($todos_cargos as $cargo) {
+    ?>
 										<option value="<?php echo $cargo['cargos'] ?>" <?=$cargo['cargos'] == $cargo_selecionado ? 'selected' : ''?>><?php echo $cargo['cargos'] ?></option>
-									<?php } ?>
+									<?php 
+} ?>
 								</select>
 							</div>
 						</div>
@@ -88,9 +92,11 @@ $todos_tipos = array(
 								<label>Tipos :</label>
 								<select class="form-control" name="tipos">
 									<option value="">Todos</option>
-									<?php foreach ($todos_tipos as $tipos) { ?>
+									<?php foreach ($todos_tipos as $tipos) {
+    ?>
 										<option value="<?=$tipos?>" <?=($tipos_selecionado == $tipos ? 'selected' : '')?>><?=$tipos?></option>
-									<?php } ?>
+									<?php 
+} ?>
 								</select>
 							</div>
 						</div>
@@ -104,7 +110,8 @@ $todos_tipos = array(
 					</div>
 				</form>
 				<div class="table-responsive">
-					<?php if(isset($contatos)) { ?>
+					<?php if (isset($contatos)) {
+    ?>
 					<table class="table table-striped table-bordered">
 						<tr>
 							<th>Contato</th>
@@ -112,8 +119,8 @@ $todos_tipos = array(
 							<th>Tipo / Ramal</th>
 						</tr>
 						<?php foreach ($contatos as $contato) {
-							$href = 'edicao.php?id_contato=' . $contato->getId();
-						?>
+    $href = 'edicao.php?id_contato=' . $contato->getId();
+    ?>
 						<tr>
 							<td>
 								<a href="<?=$href?>">
@@ -123,15 +130,21 @@ $todos_tipos = array(
 							<td><?=$contato->getCargo()?></td>
 							<td>
 								<ul>
-								<?php foreach ($contato->getRamais() as $ramal) {	?>
+								<?php foreach ($contato->getRamais() as $ramal) {
+    ?>
 									<li><?=$ramal->getTipo() ?> - <?=$ramal->getNumero() ?></li>
-								<?php } ?>
+								<?php 
+}
+    ?>
 								</ul>
 							</td>
 						</tr>
-						<?php } ?>
+						<?php 
+}
+    ?>
 					</table>
-					<?php } ?>
+					<?php 
+} ?>
 				</div>
 			</div>
 		</div>

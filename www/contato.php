@@ -24,9 +24,9 @@ if (!$ulog) {
     return header("Location: login.php");
 }
 if (isset($_POST['Enviar'])) {
-		try {
-			$_POST['id']="";					
-      $contato = Contato::fromArray($_POST);
+    try {
+        $_POST['id']="";
+        $contato = Contato::fromArray($_POST);
     } catch (Exception $ex) {
         header("HTTP/1.1 404 Bad Request");
         echo $ex->getMessage();
@@ -63,7 +63,7 @@ if (isset($_POST['Enviar'])) {
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Cargos :</label>
-                                <input type="text" name="cargos" max-length="50" class="form-control" id="input_cargos" 
+                                <input type="text" name="cargos" max-length="50" class="form-control" id="input_cargos"
                                    autofocus autocomplete="off"><br>
                                 <div><span id="total"></span> Restantes</div>
                             </div>

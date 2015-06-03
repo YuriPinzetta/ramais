@@ -23,11 +23,13 @@ if (!$ulog) {
 		</head>
 		<body>
 			<?php include 'menu.php'?>
-			<?php if (isset($_GET['error'])) { ?>
+			<?php if (isset($_GET['error'])) {
+    ?>
 			<div class="row">
 						<div class="col-md-12">Ocorreu um erro na execução</div>
 			</div>
-			<?php } ?>
+			<?php 
+} ?>
 				<div class="row">
 					<div class="form-group">
 						<div class="col-md-4">
@@ -42,7 +44,7 @@ if (!$ulog) {
 								<button type="button" class="btn btn-default form-control">
 									<span>Ramais</span>
 								</button>
-							</a>	
+							</a>
 						</div>
 						<div class="col-md-4">
 							<a href="consulta.php">

@@ -2,14 +2,14 @@
 
 $fd = fopen('contatos.txt', 'r');
 if ($fd === false) {
-	exit(1);
+    exit(1);
 }
 /*
 array(
-	array('nome' => 'Yuri', 'ramal' => '123'),
-	array('nome' => 'Yuri', 'ramal' => '123'),
-	array('nome' => 'Yuri', 'ramal' => '123'),
-	array('nome' => 'Yuri', 'ramal' => '123')
+    array('nome' => 'Yuri', 'ramal' => '123'),
+    array('nome' => 'Yuri', 'ramal' => '123'),
+    array('nome' => 'Yuri', 'ramal' => '123'),
+    array('nome' => 'Yuri', 'ramal' => '123')
 )
 */
 /*$linha1 = fgets($fd);
@@ -25,14 +25,13 @@ var_dump($ramal);
 $linha= fgets($fd);
 $coluna = explode("\t", $linha);
 foreach($coluna as $colunas){
-	$coluna[] = $colunas;
+    $coluna[] = $colunas;
 }*/
-while(feof($fd) === false) {
-	$linha = fgets($fd);
-	if ($linha !== false) {
-		//$column = array('nome', 'ramal');	
-		//$column = array('nome' => 'Yuri', 'ramal' => 123);
-		var_dump($linha);
-	}
+while (feof($fd) === false) {
+    $linha = fgets($fd);
+    if ($linha !== false) {
+        //$column = array('nome', 'ramal');
+        //$column = array('nome' => 'Yuri', 'ramal' => 123);
+        var_dump($linha);
+    }
 }
-?>

@@ -27,7 +27,7 @@ $ramalDao = new RamalDAO($pdo);
 $contatoDao = new ContatoDAO($pdo, $ramalDao);
 $contatos = $contatoDao->listar(array());
 if (isset($_POST['Enviar'])) {
-		$_POST['id'] = ""; 
+    $_POST['id'] = "";
     try {
         $ramal = Ramal::fromArray($_POST);
     } catch (Exception $ex) {
@@ -68,10 +68,12 @@ if (isset($_POST['Enviar'])) {
                             <div class="form-group">
                                 <label>Contato :</label>
                                 <select class="form-control" name="id_contato">
-                                <?php foreach ($contatos as $contato) { ?>
+                                <?php foreach ($contatos as $contato) {
+    ?>
                                     <option value="<?php echo $contato->getId() ?>"><?php echo $contato->getNome() ?>
                                     </option>
-                            <?php } ?>
+                            <?php 
+} ?>
                                 </select>
                             </div>
                         </div>
