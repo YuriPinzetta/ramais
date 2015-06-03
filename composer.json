@@ -1,0 +1,19 @@
+{
+    "name": "amixsi/ramais",
+    "description": "Cadastro e consulta de ramais internos",
+    "authors": [
+        {
+            "name": "yuri",
+            "email": "pinzetta@gmail.com"
+        }
+    ],
+    "require": {},
+		"autoload": {
+						"files": [
+										"lib/functions.php"
+						],
+						"psr-4": {
+										"amixsi\\": "lib/amixsi/"
+						}
+		}
+}

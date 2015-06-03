@@ -1,7 +1,6 @@
 <?php
-include "../lib/functions.php";
-include "../lib/Usuario.php";
-include "../lib/UsuarioDAO.php";
+
+require_once "../vendor/autoload.php";
 
 use amixsi\UsuarioDAO;
 use amixsi\usuario;

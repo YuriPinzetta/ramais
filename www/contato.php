@@ -1,11 +1,6 @@
 <?php
-include "../lib/functions.php";
-include "../lib/Contato.php";
-include "../lib/ContatoDAO.php";
-include "../lib/Usuario.php";
-include "../lib/UsuarioDAO.php";
-include "../lib/Ramal.php";
-include "../lib/RamalDAO.php";
+
+require_once "../vendor/autoload.php";
 
 use amixsi\Usuario;
 use amixsi\UsuarioDAO;
