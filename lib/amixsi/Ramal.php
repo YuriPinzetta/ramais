@@ -20,13 +20,15 @@ class Ramal
                 }
                     /*if(array_key_exists('id', $dado)) $id = $dado['id'];
                     else $id = "";*/
-                    $ramal[] = new Ramal($dado['tipo'], $dado['id_contato'], $dado['ramal'], $dado['id']);
+										$id = isset($dado['id']) ? $dado['id'] : null;
+                    $ramal[] = new Ramal($dado['tipo'], $dado['id_contato'], $dado['ramal'], $id);
             }
         } else {
             /*if(array_key_exists('id', $dados)) $id = $dados['id'];
 else $id = "";*/
                     //var_dump($dados);
-                    $ramal = new Ramal($dados['tipo'], $dados['id_contato'], $dados['ramal'], $dados['id']);
+										$id = isset($dados['id']) ? $dados['id'] : null;
+                    $ramal = new Ramal($dados['tipo'], $dados['id_contato'], $dados['ramal'], $id);
         }
         return $ramal;
     }

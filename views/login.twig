@@ -1,0 +1,43 @@
+{% extends 'layout.twig' %}
+
+{% block body %}
+<form action="/login" method="post">
+	{% for m in message %}
+	<script>alert('{{ m }}');</script>
+	{% endfor %}
+	<div class="container">
+		<div class="row">
+			<div class="col-md-4">
+				<div class="form-group">
+					<label>Login :</label>
+					<input type="text" name="usuario" placeholder="Usuário" class="form-control"/>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-4">
+				<div class="form-group">
+					<label>Senha :</label>
+					<input type="password" name="senha" placeholder="Senha" class="form-control"/>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-2">
+				<div class="form-group">
+					<input name="logar" type="submit" value="logar" class="form-control botao">
+				</div>
+			</div>
+			<div class="col-md-2">
+				<div class="form-group">
+					<a href="cadastro.php">
+						<input name="cadastre-se" type="button" value="cadastre-se"
+																	class="form-control botao"/>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</form>
+{% endblock %}

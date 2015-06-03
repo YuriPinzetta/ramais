@@ -19,13 +19,9 @@ class UsuarioDAO
         $nlinha = $stmt->rowCount();
         if ($nlinha > 0) {
             $usuario = $stmt->fetch(\PDO::FETCH_ASSOC);
-                //trigger_error(print_r(array($nlinha, $usuario), true));
-                //trigger_error(var_export(array($nlinha, $usuario), true));
-                $_SESSION['usuario'] = $usuario['login'];
-            header("Location: index.php");
-        } else {
-            echo "<script>alert ('Usuario ou senha não existe.')</script>";
+						return $usuario['login'];;
         }
+				return null;
     }
     public function logado()
     {

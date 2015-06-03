@@ -6,7 +6,7 @@ class ContatoDAO
 {
     private $pdo;
 
-    public function __construct($pdo, $ramalDao)
+    public function __construct($pdo, $ramalDao = null)
     {
         $this->pdo = $pdo;
         $this->ramalDao = $ramalDao;
