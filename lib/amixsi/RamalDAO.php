@@ -30,7 +30,6 @@ class RamalDAO
         $stmt->execute(array(':id_contato' => $id_contato,
          ':id_ramal' => $id_ramal,
          ':tipos' => $tipos, 'ramal' => $ramais));
-        header("Location: index.php");
     }
     public function listar(array $params)
     {

@@ -23,8 +23,8 @@ class ContatoDAO
     public function consulta($id)
     {
         $stmt = $this->pdo->prepare('select id, contato, cargos from contato WHERE id = :id');
-        $stmt->execute(array(':id' => $id));
-        $contato = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $stmt->execute(array(":id" => $id));
+				$contato = $stmt->fetch(\PDO::FETCH_ASSOC);
 
         return Contato::fromArray($contato);
     }

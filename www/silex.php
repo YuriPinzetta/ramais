@@ -97,4 +97,55 @@ $app->get('/ramais', function (Request $request) use ($app) {
 	));
 });
 
+$app->get('/consulta', function (Request $request) use ($app) {
+	$data = $request->query->all();
+	$pdo = db();
+	$ramalDao = new RamalDAO($pdo);
+	$contatoDao = new ContatoDAO($pdo, $ramalDao);
+	$todos_contatos = $contatoDao->listar(array());
+	$contato_selecionado = null;
+  $contatos = array();
+	if (count($data)) {
+  	$contatos = $contatoDao->listar($data);
+	}
+	$todos_cargos = $contatoDao->listarCargos(array());
+	$cargo_selecionado = null;
+	$todos_tipos = array(
+  	"Interno",
+    "Casa",
+    "Celular",
+    "Notebook"
+	);
+	$tipos_selecionado = null;
+	return $app['twig']->render('consulta.twig', array(
+		'todos_contatos' => $todos_contatos,
+		'contato_selecionado' => $contato_selecionado,
+		'contatos' => $contatos,
+		'todos_cargos' => $todos_cargos,
+		'cargo_selecionado' => $cargo_selecionado,
+		'todos_tipos' => $todos_tipos,
+		'tipos_selecionado' => $tipos_selecionado
+	));
+});
+
+$app->get('/edicao', function (Request $request) use ($app) { 
+	$pdo = db();
+	$ramalDao = new RamalDAO($pdo);
+	$contatoDao = new ContatoDAO($pdo, $ramalDao);
+	$ramais = array();
+	$contato = $contatoDao->consulta($request->query->get('id_contato'));
+	$ramais = $ramalDao->listar($_GET);
+	$todos_tipos = array(
+    "Interno",
+    "Casa",
+    "Celular",
+    "Notebook"
+	);
+	return $app['twig']->render('edicao.twig', array(
+		'contato' => $contato,
+		'ramais' => $ramais,
+		'todos_tipos' => $todos_tipos
+	));
+});
+
 $app->run();
