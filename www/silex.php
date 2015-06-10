@@ -20,12 +20,12 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 	'twig.path' => __DIR__.'/../views',
 ));
 
-
-$app->get('/home', function (Request $request) use ($app) { 
-		return $app['twig']->render('home.twig', array(
-			'error' => $request->get('error')
-		));
-}); 
+$temUsuario =	function (Request $request) use ($app) {
+	$session = $app['session'];
+	if (!$session->has('usuario')) {
+		return $app->redirect('/login');
+	}
+};
 
 $app->get('/login', function (Request $request) use ($app) { 
 	return $app['twig']->render('login.twig', array(
@@ -46,16 +46,23 @@ $app->post('/login', function (Request $request) use ($app) {
 	return $app->redirect('/login');
 });
 
+$app->get('/home', function (Request $request) use ($app) { 
+		return $app['twig']->render('home.twig', array(
+			'error' => $request->get('error')
+		));
+})->before($temUsuario);
+
+
 $app->get('/logout', function () use ($app) { 
 	$app['session']->clear();
 	return $app->redirect('/login');
-});
+})->before($temUsuario);
 
 $app->get('/contato', function (Request $request) use ($app) { 
 	return $app['twig']->render('contato.twig', array(
 		'message' => $app['session']->getFlashBag()->get('message')
 	));
-});
+})->before($temUsuario);
 
 $app->post('/contato', function (Request $request) use ($app) { 
   try {
@@ -69,7 +76,7 @@ $app->post('/contato', function (Request $request) use ($app) {
   $contatoDao = new ContatoDAO($pdo);
   $contatoDao->inserir($contato);
 	return $app->redirect('/home');
-});
+})->before($temUsuario);
 
 
 $app->post('/ramais', function (Request $request) use ($app) {
@@ -85,7 +92,7 @@ $app->post('/ramais', function (Request $request) use ($app) {
     }
     $ramalDao->inserir($ramal);
     return $app->redirect('/home');
-});
+})->before($temUsuario);
 
 $app->get('/ramais', function (Request $request) use ($app) { 
 	$pdo = db();
@@ -96,7 +103,7 @@ $app->get('/ramais', function (Request $request) use ($app) {
 		'message' => $app['session']->getFlashBag()->get('message'),
 		'contatos' => $contatos
 	));
-});
+})->before($temUsuario);
 
 $app->get('/consulta', function (Request $request) use ($app) {
 	$data = $request->query->all();
@@ -127,7 +134,7 @@ $app->get('/consulta', function (Request $request) use ($app) {
 		'todos_tipos' => $todos_tipos,
 		'tipos_selecionado' => $tipos_selecionado
 	));
-});
+})->before($temUsuario);
 
 $app->post('/edicao', function (Request $request) use ($app) {
 	$pdo = db();
@@ -186,7 +193,7 @@ $app->post('/edicao', function (Request $request) use ($app) {
   			return $app->redirect('/home?error=1');
     }
 }
-});
+})->before($temUsuario);
 
 $app->get('/edicao', function (Request $request) use ($app) { 
 	$pdo = db();
@@ -207,14 +214,17 @@ $app->get('/edicao', function (Request $request) use ($app) {
 		'ramais' => $ramais,
 		'todos_tipos' => $todos_tipos
 	));
-});
+})->before($temUsuario);
+
 $app->post('/cadastro', function (Request $request) use ($app) {
 	$pdo = db();
   $usuarioDao = new UsuarioDAO($pdo);
   $usuarioDao->verifica($_POST);
   return $app->redirect('/login');
-});
+})->before($temUsuario);
+
 $app->get('/cadastro', function (Request $request) use ($app) {
   return $app['twig']->render('cadastro.twig');
-});
+})->before($temUsuario);
+
 $app->run();
