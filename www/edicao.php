@@ -40,8 +40,6 @@ if (isset($_POST['Alterar'])) {
     $contatoDao->altera($contato, $ramais);
 }
 if (isset($_POST['deletaRamais'])) {
-}
-if (isset($_POST['deletaRamais'])) {
     $contato = array(
             'id_contato' => $_GET['id_contato']
         );

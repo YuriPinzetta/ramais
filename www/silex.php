@@ -15,6 +15,7 @@ $app = new Silex\Application();
 $app['debug'] = true;
 
 $app->register(new Silex\Provider\SessionServiceProvider());
+$app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
 	'twig.path' => __DIR__.'/../views',
 ));
@@ -130,14 +131,61 @@ $app->get('/consulta', function (Request $request) use ($app) {
 
 $app->post('/edicao', function (Request $request) use ($app) {
 	$pdo = db();
-	$data = $request->request->all();
-	var_dump($data);
+	$alterar = $request->request->get('Alterar'); 
+	$ramais_id = $request->request->get('ramais_id'); 
+	$id_contato = $request->query->get('id_contato'); 
+	$contato = $request->request->get('contato');
+	$cargos = $request->request->get('cargos');
+	$tipos = $request->request->get('tipos');
+	$numeros = $request->request->get('numeros');
 	$ramalDao = new RamalDAO($pdo);
 	$contatoDao = new ContatoDAO($pdo, $ramalDao);
-	if ($request->request->query('alterar')) {
+	if ($alterar) {
+		$contato = array(
+			'id_contato' => $id_contato,
+			'contato' => $contato,
+			'cargos' => $cargos
+		);
+		$ramais = array();
+		if($ramais_id && is_array($ramais_id)) {
+			foreach($ramais_id as $index => $id) {
+				$ramal = array(
+					'id' => $id,
+					'tipos' => $tipos[$index],
+					'ramal' => $numeros[$index]
+				);
+				$ramais[] = $ramal;
+			}
+		}
     $contatoDao->altera($contato, $ramais);
+  	return $app->redirect('/consulta?id_contato='.$id_contato);
+	}
+	$deletaRamais = $request->request->get('deletaRamais'); 
+	if($deletaRamais)	{
+		$contato =  array(
+			'id_contato' => $id_contato
+		);
+    if ($ramalDao->deleta($contato)) {
+  		return $app->redirect('/home');
+    }
+	}
+	$deletaContato = $request->request->get('deletaContato');
+	if ($deletaContato) {
+    $contato = array(
+            'id_contato' => $id_contato
+        );
+    try {
+        $pdo->beginTransaction();
+        $ramalDao->deleta($contato);
+        $contatoDao->deleta($contato);
+        $pdo->commit();
+  			return $app->redirect('/home');
+    } catch (Exception $e) {
+        $pdo->rollBack();
+				$app['session']->getFlashBag()->add('message', $ex->getMessage());
+  			return $app->redirect('/home?error=1');
+    }
 }
-
 });
 
 $app->get('/edicao', function (Request $request) use ($app) { 
@@ -154,10 +202,19 @@ $app->get('/edicao', function (Request $request) use ($app) {
     "Notebook"
 	);
 	return $app['twig']->render('edicao.twig', array(
+		'message' => $app['session']->getFlashBag()->get('message'),
 		'contato' => $contato,
 		'ramais' => $ramais,
 		'todos_tipos' => $todos_tipos
 	));
 });
-
+$app->post('/cadastro', function (Request $request) use ($app) {
+	$pdo = db();
+  $usuarioDao = new UsuarioDAO($pdo);
+  $usuarioDao->verifica($_POST);
+  return $app->redirect('/login');
+});
+$app->get('/cadastro', function (Request $request) use ($app) {
+  return $app['twig']->render('cadastro.twig');
+});
 $app->run();

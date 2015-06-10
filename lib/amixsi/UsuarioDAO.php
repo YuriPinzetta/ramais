@@ -39,7 +39,6 @@ class UsuarioDAO
         $existe = $stmt->rowCount();
         if ($existe == 0) {
             self::cadastra($_POST);
-            return header("Location: login.php");
         } else {
             echo "<script>alert ('Este usuário já existe, tente outro.')</script>";
         }

@@ -63,7 +63,6 @@ class RamalDAO
         $id = $params['id'];
         $stmt = $this->pdo->prepare("update ramal set tipo = :tipos, ramal = :ramal WHERE id_contato = :id_contato and id = :id");
         if ($stmt->execute(array(':tipos' => $tipos, ':ramal' => $ramal, ':id_contato' => $id_contato, ':id' => $id)) == true) {
-            header("Location: index.php");
         } else {
             echo "<script>alert ('Não houve alteração no banco, tente novamente.')</script>";
         }
