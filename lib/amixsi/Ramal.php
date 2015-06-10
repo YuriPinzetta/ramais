@@ -14,26 +14,18 @@ class Ramal
     {
         $multi = (isset($dados[0]) ? true : false);
         if ($multi) {
-            foreach ($dados as $key => $dado) {
-                if (empty($dado['ramal'])) {
-                    throw new Exception('Ramal não preenchido');
-                }
-                    /*if(array_key_exists('id', $dado)) $id = $dado['id'];
-                    else $id = "";*/
-										$id = isset($dado['id']) ? $dado['id'] : null;
-                    $ramal[] = new Ramal($dado['tipo'], $dado['id_contato'], $dado['ramal'], $id);
+            $ramais = array();
+            foreach ($dados as $ramal) {
+                $ramais[] = self::fromArray($ramal);
             }
-        } else {
-            /*if(array_key_exists('id', $dados)) $id = $dados['id'];
-else $id = "";*/
-                    //var_dump($dados);
-										$id = isset($dados['id']) ? $dados['id'] : null;
-                    $ramal = new Ramal($dados['tipo'], $dados['id_contato'], $dados['ramal'], $id);
+            return $ramais;
         }
+        $id = isset($dados['id']) ? $dados['id'] : null;
+        $ramal = new Ramal($dados['tipo'], $dados['id_contato'], $dados['ramal'], $id);
         return $ramal;
     }
 
-    public function __construct($tipo, $id_contato, $numero, $id)
+    public function __construct($tipo, $id_contato, $numero, $id = null)
     {
         $this->setTipo($tipo);
         $this->setIdcontato($id_contato);

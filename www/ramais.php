@@ -22,7 +22,6 @@ $ramalDao = new RamalDAO($pdo);
 $contatoDao = new ContatoDAO($pdo, $ramalDao);
 $contatos = $contatoDao->listar(array());
 if (isset($_POST['Enviar'])) {
-    $_POST['id'] = "";
     try {
         $ramal = Ramal::fromArray($_POST);
     } catch (Exception $ex) {

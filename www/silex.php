@@ -128,6 +128,18 @@ $app->get('/consulta', function (Request $request) use ($app) {
 	));
 });
 
+$app->post('/edicao', function (Request $request) use ($app) {
+	$pdo = db();
+	$data = $request->request->all();
+	var_dump($data);
+	$ramalDao = new RamalDAO($pdo);
+	$contatoDao = new ContatoDAO($pdo, $ramalDao);
+	if ($request->request->query('alterar')) {
+    $contatoDao->altera($contato, $ramais);
+}
+
+});
+
 $app->get('/edicao', function (Request $request) use ($app) { 
 	$pdo = db();
 	$ramalDao = new RamalDAO($pdo);
