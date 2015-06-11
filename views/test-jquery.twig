@@ -1,0 +1,59 @@
+{% extends 'layout.twig' %}
+
+{% block head %}
+<style>
+	#quadrado{
+		float: left;
+		background-color: red;
+		width: 10px;
+		height: 10px;
+	}
+	#quadrado2{
+		float: left;
+		position: relative;
+		background-color: red;
+		width: 20px;
+		height: 20px;
+	}
+	#quadrado3{
+		float: left;
+		position: relative;
+		background-color: red;
+		width: 30px;
+		height: 30px;
+	}
+</style>
+{% endblock %}
+
+{% block body %}
+<div id="bloco">
+
+<p id="quadrado"></p>
+
+</div>
+<div class="row"
+	<div id="message"></div>
+	<ul id="contatos"></ul>
+	<button id="btn">Adiciona mensagem</button>
+	<button id="btnAumenta">Aumenta Quadrado</button>
+</div>
+<script>
+$(function () {
+		$('#btn').click(function () {
+			$.getJSON('/test-message', function (data) {
+				$('#message').html('<h1>' + data.message + '<h1>');
+				$('#contatos').children().remove();
+				$.each(data.contatos, function (i, contato) {
+					$('#contatos').append($('<h2><li>' + contato.nome + '</li><h2>'));
+				});
+			})
+		});
+		var $i = 0;
+		$(document).click(function(){
+				var $aumenta = 30;
+				$("#quadrado").width($aumenta).height($aumenta);
+		});
+});
+</script>
+
+{% endblock %}

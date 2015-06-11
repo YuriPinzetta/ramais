@@ -27,6 +27,28 @@ $temUsuario =	function (Request $request) use ($app) {
 	}
 };
 
+$app->get('/test-jquery', function (Request $request) use ($app) { 
+	return $app['twig']->render('test-jquery.twig');
+});
+
+$app->get('/test-message', function (Request $request) use ($app) { 
+  $pdo = db();
+  $ramalDao = new RamalDAO($pdo);
+  $contatoDao = new ContatoDAO($pdo, $ramalDao);
+	$contatos = $contatoDao->listar(array());
+	$contatos2 = array();
+	foreach ($contatos as $contato) {
+		$contatos2[] = array(
+			'id' => $contato->getId(),
+			'nome' => $contato->getNome()
+		);
+	}
+	return $app->json(array(
+		'message' => 'Hello world!',
+		'contatos' => $contatos2
+	));
+});
+
 $app->get('/login', function (Request $request) use ($app) { 
 	return $app['twig']->render('login.twig', array(
 		'message' => $app['session']->getFlashBag()->get('message')
