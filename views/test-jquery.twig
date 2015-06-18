@@ -2,25 +2,13 @@
 
 {% block head %}
 <style>
-	#quadrado{
-		float: left;
+	.circulo{
+		display: inline-block;
 		background-color: red;
-		width: 10px;
-		height: 10px;
-	}
-	#quadrado2{
-		float: left;
-		position: relative;
-		background-color: red;
+		border-radius: 20px;
 		width: 20px;
 		height: 20px;
-	}
-	#quadrado3{
-		float: left;
-		position: relative;
-		background-color: red;
-		width: 30px;
-		height: 30px;
+		margin: 2px;
 	}
 </style>
 {% endblock %}
@@ -28,14 +16,14 @@
 {% block body %}
 <div id="bloco">
 
-<p id="quadrado"></p>
+<nav class="circulo"></nav>
 
 </div>
-<div class="row"
+<div>
 	<div id="message"></div>
 	<ul id="contatos"></ul>
 	<button id="btn">Adiciona mensagem</button>
-	<button id="btnAumenta">Aumenta Quadrado</button>
+	<button id="btnAumenta">Aumenta Circulo</button>
 </div>
 <script>
 $(function () {
@@ -44,15 +32,20 @@ $(function () {
 				$('#message').html('<h1>' + data.message + '<h1>');
 				$('#contatos').children().remove();
 				$.each(data.contatos, function (i, contato) {
-					$('#contatos').append($('<h2><li>' + contato.nome + '</li><h2>'));
+					$('#contatos').append($('<h4><li>' + contato.nome + '</li><h4>'));
 				});
 			})
 		});
-		var $i = 0;
-		$(document).click(function(){
-				var $aumenta = 30;
-				$("#quadrado").width($aumenta).height($aumenta);
+		$("#btnAumenta").click(function(){
+			$(".circulo").each(function () {
+				var $tamanho = $(this).width();
+				$tamanho = $tamanho + 10;
+				$(this).css("border-radius", $tamanho);
+				$(this).width($tamanho).height($tamanho);
+			});
+			$('#bloco').prepend('<nav class="circulo"></nav>');
 		});
+
 });
 </script>
 
