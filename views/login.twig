@@ -1,7 +1,7 @@
 {% extends 'layout.twig' %}
 
 {% block body %}
-<form action="/login" method="post">
+<form id="login" action="/login" method="post">
 	{% for m in message %}
 	<script>alert('{{ m }}');</script>
 	{% endfor %}
@@ -10,7 +10,7 @@
 			<div class="col-md-4">
 				<div class="form-group">
 					<label>Login :</label>
-					<input type="text" name="usuario" placeholder="Usuário" class="form-control"/>
+					<input type="text" name="usuario" placeholder="Usuário" class="form-control" autocomplete="off" />
 				</div>
 			</div>
 		</div>
@@ -27,6 +27,7 @@
 				<div class="form-group">
 					<button type="submit" class="btn btn-success form-control">
 						<span>Logar</span>
+						<span class="loader"></span>
 					</button>
 				</div>
 			</div>
@@ -34,4 +35,9 @@
 	</div>
 </div>
 </form>
+<script>
+$(function () {
+	$('#login').submit(trataSubmitAjax('/home'), loaderAlterar);
+});
+</script>
 {% endblock %}

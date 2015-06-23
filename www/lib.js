@@ -50,3 +50,46 @@ function submit(event) {
 		event.preventDefault();
 	}
 }
+
+function ComeComeLoader($loader, $btn){
+	return {
+		load: function (on) {
+			if (on) {
+				$loader.addClass('loader-show');
+				if ($btn) {
+					$btn.prop('disabled', true);
+				}
+			} else {
+				$loader.removeClass('loader-show');
+				if ($btn) {
+					$btn.prop('disabled', false);
+				}
+			}
+		}
+	};
+}
+
+function trataSubmitAjax(url, loader) {
+	if (loader === undefined) {
+		loader = ComeComeLoader($('.loader'));
+	}
+	return function (e) {
+		var $form = $(this);
+		var action = $form.prop('action');
+		var formData = $form.serialize();
+
+		// Previne submit
+		e.preventDefault();
+
+		loader.load(true);
+		$.post(action, formData, function (data) {
+			loader.load(false);
+			if (data.message) {
+				alert(data.message);
+			}
+			if (data.success) {
+				window.location = url;
+			}
+		});
+	};
+}

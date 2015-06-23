@@ -5,25 +5,25 @@
 		var form = document.getElementById('form');
 		form.addEventListener('keypress', function (event) {
 			var target = event.target;
-			if (target.name == 'ramal[]') {
+			if (target.name == 'numeros[]') {
 				apenasNumero(event);
 			}
 		});
 		var inputCo = document.getElementById("input_contato");
 		var bloqueiaTecla1 = new BloqueadoTecla();
-		inputCo.addEventListener('keypress', function (event) { bloqueiaTecla1.bloqueia(event); }, false);
+		inputCo.addEventListener('keypress', function(event){bloqueiaTecla1.bloqueia(event);}, false);
 	};
 	</script>
 {% endblock %}
 {% block body %}
-<form id="form" action="{{ app.request.server.get('REQUEST_URI') }}" method="post">
+<form id="form" class="edicao" action="{{ app.request.server.get('REQUEST_URI') }}" method="post">
 					<div class="row">
 						<div class="col-md-3">
 							<div class="form-group">
 								<label>Nome do Contato :</label>
-										<input type="text"	class="form-control" autocomplete="off" name="contato"
+									<input type="text"	class="form-control" autocomplete="off" name="contato"
 										id="input_contato" value="{{ contato.Nome }}">
-                    </input>
+                	</input>
 							</div>
 						</div>
 						<div class="col-md-3">
@@ -61,22 +61,25 @@
 					<div class="row">
 						<div class="col-md-2">
 							<div class="form-group">
-								<button name="Alterar" type="submit" value="Alterar" class="btn btn-info form-control">
+								<button name="Alterar" id="alterar" type="submit" value="Alterar" class="btn btn-info form-control">
 									<span>Alterar</span>
+									<span class="loader"></span>
 								</button>
 							</div>
 						</div>
 						<div class="col-md-2">
 							<div class="form-group">
-								<button name="deletaRamais" type="submit" value="Deletar Ramais" class="btn btn-warning form-control">
+								<button id="deletaRamais" name="deleta_Ramais" type="submit" value="Deletar Ramais" class="btn btn-warning form-control">
 									<span>Deleta Ramais</span>
+									<span class="loader"></span>
 								</button>
 							</div>
 						</div>
 						<div class="col-md-2">
 							<div class="form-group">
-								<button name="deletaContato" type="submit" value="Deletar Contato" class="btn btn-danger form-control">
+								<button id="deletaContato" name="deletaContato" type="submit" value="Deletar Contato" class="btn btn-danger form-control">
 									<span>Deleta Contato</span>
+									<span class="loader"></span>
 								</button>
 							</div>
 						</div>
@@ -84,4 +87,34 @@
 				</form>
 			</div>
 		</div>
+		<script>
+		$(function () {
+				var loaderAlterar = ComeComeLoader($('#alterar .loader'), $('#alterar'));
+				var fn = trataSubmitAjax('/consulta' + location.search, loaderAlterar);
+				$('#alterar').click(function (e) {
+					fn.call($('#form'), e);
+				});
+				var loaderRamais = ComeComeLoader($('#deletaRamais .loader'), $('#deletaRamais'));
+				$('#deletaRamais').click(deletaRedirect('/ramais' + location.search, '/home', loaderRamais));
+				var loaderContato = ComeComeLoader($('#deletaContato .loader'), $('#deletaContato'));
+				$('#deletaContato').click(deletaRedirect('/contato' + location.search, '/home', loaderContato));
+				function deletaRedirect(url, redirectTo, loader) {
+					return function (e) {
+						e.preventDefault();
+						loader.load(true);
+						$.ajax({
+							type: "DELETE",
+							url: url,
+							success: success
+						});
+						function success(data) {
+							loader.load(false);
+							if (data.success) {
+								location = redirectTo;
+							}
+						}
+					};
+				}
+		});
+		</script>
 {% endblock %}

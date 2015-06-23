@@ -36,12 +36,7 @@ class UsuarioDAO
         $login = $params['usuario'];
         $stmt = $this->pdo->prepare("select login from usuario where login = :login");
         $stmt->execute(array(':login' => $login));
-        $existe = $stmt->rowCount();
-        if ($existe == 0) {
-            self::cadastra($_POST);
-        } else {
-            echo "<script>alert ('Este usuário já existe, tente outro.')</script>";
-        }
+        return $stmt->rowCount() > 0;
     }
     public function cadastra(array $params)
     {

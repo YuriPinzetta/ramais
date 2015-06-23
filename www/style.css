@@ -10,3 +10,16 @@ tr th{
 .entra{
 	position:center;
 }
+.loader {
+	float: right;
+	width: 1.4em;
+	height: 1.4em;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	background: transparent;
+}
+.loader-show {
+	background: no-repeat url('img/come-come.gif');
+	background-size: contain;
+}

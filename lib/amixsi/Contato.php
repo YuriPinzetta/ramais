@@ -12,10 +12,10 @@ class Contato
     public static function fromArray($dados)
     {
         if (empty($dados['contato'])) {
-            throw new Exception('Contato não preenchido');
+            throw new \Exception('Contato não preenchido');
         }
         if (empty($dados['cargos'])) {
-            throw new Exception('Cargos não preenchido');
+            throw new \Exception('Cargos não preenchido');
         }
 				$id = isset($dados['id']) ? $dados['id'] : null;
         $contato = new Contato($dados['contato'], $dados['cargos'], $id);

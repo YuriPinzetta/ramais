@@ -8,7 +8,7 @@
   </script>
 {% endblock %}
 {% block body %}
-                <form action="/ramais" method="post">
+                <form id="ramais" action="/ramais" method="post">
                     <div class="row">
                         <div class="col-md-3">
                             <div class="form-group">
@@ -44,9 +44,15 @@
                             <div class="form-group">
                                 <button id="enviar" type="submit" value="Enviar" class="btn btn-success form-control">
 																	<span>Enviar</span>
+																	<span class="loader"></span>
 																</button>	
                             </div>
                         </div>
                     </div>
                 </form>
+								<script>
+									$(function () {
+										$('#ramais').submit(trataSubmitAjax('/home'), loaderAlterar);
+									});
+		</script>
 {% endblock %}

@@ -19,7 +19,7 @@
 	{% for m in message %}
 	<script>alert('{{ m }}');</script>
 	{% endfor %}
-	<form action="/contato" method="post" id="salva_form">
+	<form id="contato" action="/contato" method="post" id="salva_form">
 			<div class="row">
 					<div class="col-md-4">
 							<div class="form-group">
@@ -42,9 +42,15 @@
 							<div class="form-group">
 									<button type="submit" value="Enviar" class="btn btn-success form-control">
 										<span>Enviar</span>
+										<span class="loader"></span>
 									</button>
 							</div>
 					</div>
 			</div>
 	</form>
+	<script>
+		$(function () {
+			$('#contato').submit(trataSubmitAjax('/home'), loaderAlterar);
+		});
+	</script>
 	{% endblock %}

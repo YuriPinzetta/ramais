@@ -62,10 +62,16 @@ $app->post('/login', function (Request $request) use ($app) {
   $usuario = $usuarioDao->valida($data);
 	if ($usuario !== null) {
 		$app['session']->set('usuario', $usuario);
-		return $app->redirect('/home');
+		return $app->json(array('success' => true));
 	}
-	$app['session']->getFlashBag()->add('message', 'Usuário e senha não existe');
-	return $app->redirect('/login');
+	return $app->json(array(
+		'success' => false,
+		'message' => 'Usuário e senha não existe'
+	));
+});
+
+$app->get('/', function () use ($app) { 
+	return $app->redirect('/home');
 });
 
 $app->get('/home', function (Request $request) use ($app) { 
@@ -97,7 +103,7 @@ $app->post('/contato', function (Request $request) use ($app) {
 	$pdo = db();
   $contatoDao = new ContatoDAO($pdo);
   $contatoDao->inserir($contato);
-	return $app->redirect('/home');
+	return $app->json(array('success' => true));
 })->before($temUsuario);
 
 
@@ -113,7 +119,7 @@ $app->post('/ramais', function (Request $request) use ($app) {
 				$app['session']->getFlashBag()->add('message', $ex->getMessage());
     }
     $ramalDao->inserir($ramal);
-    return $app->redirect('/home');
+		return $app->json(array('success' => true));
 })->before($temUsuario);
 
 $app->get('/ramais', function (Request $request) use ($app) { 
@@ -160,7 +166,6 @@ $app->get('/consulta', function (Request $request) use ($app) {
 
 $app->post('/edicao', function (Request $request) use ($app) {
 	$pdo = db();
-	$alterar = $request->request->get('Alterar'); 
 	$ramais_id = $request->request->get('ramais_id'); 
 	$id_contato = $request->query->get('id_contato'); 
 	$contato = $request->request->get('contato');
@@ -169,52 +174,57 @@ $app->post('/edicao', function (Request $request) use ($app) {
 	$numeros = $request->request->get('numeros');
 	$ramalDao = new RamalDAO($pdo);
 	$contatoDao = new ContatoDAO($pdo, $ramalDao);
-	if ($alterar) {
-		$contato = array(
-			'id_contato' => $id_contato,
-			'contato' => $contato,
-			'cargos' => $cargos
-		);
-		$ramais = array();
-		if($ramais_id && is_array($ramais_id)) {
-			foreach($ramais_id as $index => $id) {
-				$ramal = array(
-					'id' => $id,
-					'tipos' => $tipos[$index],
-					'ramal' => $numeros[$index]
-				);
-				$ramais[] = $ramal;
-			}
+	$contato = array(
+		'id_contato' => $id_contato,
+		'contato' => $contato,
+		'cargos' => $cargos
+	);
+	$ramais = array();
+	if($ramais_id && is_array($ramais_id)) {
+		foreach($ramais_id as $index => $id) {
+			$ramal = array(
+				'id' => $id,
+				'tipos' => $tipos[$index],
+				'ramal' => $numeros[$index]
+			);
+			$ramais[] = $ramal;
 		}
-    $contatoDao->altera($contato, $ramais);
-  	return $app->redirect('/consulta?id_contato='.$id_contato);
 	}
-	$deletaRamais = $request->request->get('deletaRamais'); 
-	if($deletaRamais)	{
-		$contato =  array(
-			'id_contato' => $id_contato
-		);
-    if ($ramalDao->deleta($contato)) {
-  		return $app->redirect('/home');
-    }
+	$contatoDao->altera($contato, $ramais);
+	return $app->json(array('success' => true));
+})->before($temUsuario);
+
+$app->delete('/contato', function (Request $request) use ($app) {
+	$pdo = db();
+	$id_contato = $request->query->get('id_contato'); 
+	$ramalDao = new RamalDAO($pdo);
+	$contatoDao = new ContatoDAO($pdo, $ramalDao);
+	$contato = array(
+		'id_contato' => $id_contato
+	);
+	try {
+			$pdo->beginTransaction();
+			$ramalDao->deleta($contato);
+			$contatoDao->deleta($contato);
+			$pdo->commit();
+			return $app->json(array('success' => true));
+	} catch (Exception $e) {
+			$pdo->rollBack();
+			return $app->json(array('success' => false, 'message' => $e->getMessage()));
 	}
-	$deletaContato = $request->request->get('deletaContato');
-	if ($deletaContato) {
-    $contato = array(
-            'id_contato' => $id_contato
-        );
-    try {
-        $pdo->beginTransaction();
-        $ramalDao->deleta($contato);
-        $contatoDao->deleta($contato);
-        $pdo->commit();
-  			return $app->redirect('/home');
-    } catch (Exception $e) {
-        $pdo->rollBack();
-				$app['session']->getFlashBag()->add('message', $ex->getMessage());
-  			return $app->redirect('/home?error=1');
-    }
-}
+})->before($temUsuario);
+
+$app->delete('/ramais', function (Request $request) use ($app) {
+	$pdo = db();
+	$id_contato = $request->query->get('id_contato'); 
+	$ramalDao = new RamalDAO($pdo);
+	$contato =  array(
+		'id_contato' => $id_contato
+	);
+	if ($ramalDao->deleta($contato)) {
+		return $app->json(array('success' => true));
+	}
+	return $app->json(array('success' => false));
 })->before($temUsuario);
 
 $app->get('/edicao', function (Request $request) use ($app) { 
@@ -239,10 +249,17 @@ $app->get('/edicao', function (Request $request) use ($app) {
 })->before($temUsuario);
 
 $app->post('/cadastro', function (Request $request) use ($app) {
+	$data = $request->request->all();
 	$pdo = db();
   $usuarioDao = new UsuarioDAO($pdo);
-  $usuarioDao->verifica($_POST);
-  return $app->redirect('/login');
+	if (!$usuarioDao->verifica($data)) {
+		$usuarioDao->cadastra($data);
+		return $app->json(array('success' => true));
+	}
+	return $app->json(array(
+		'success' => false,
+		'message' => 'Usuário já existe.'
+	));
 })->before($temUsuario);
 
 $app->get('/cadastro', function (Request $request) use ($app) {

@@ -9,7 +9,7 @@
 			</script>
 {% endblock %}	
 {% block body %}
-			<form action="" method="post">
+			<form id="cadastro" action="" method="post">
 				<div class="container">
 					<div class="row">
 						<div class="col-md-4">
@@ -32,6 +32,7 @@
 							<div class="form-group">
 								<button name="cadastrar" type="submit" value="cadastrar" class="btn btn-success form-control">
 									<span>Cadastrar</span>
+									<span class="loader"></span>
 								</button>
 							</div>
 						</div>
@@ -39,4 +40,9 @@
 				</div>
 			</div>
 		</form>
+		<script>
+		$(function () {
+			$('#cadastro').submit(trataSubmitAjax('/home'), loaderAlterar);
+		});
+		</script>
 {% endblock %}
