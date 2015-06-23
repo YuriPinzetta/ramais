@@ -40,7 +40,7 @@
 			<div class="row">
 					<div class="col-md-2">
 							<div class="form-group">
-									<button type="submit" value="Enviar" class="btn btn-success form-control">
+									<button id="enviar" type="submit" value="Enviar" class="btn btn-success form-control">
 										<span>Enviar</span>
 										<span class="loader"></span>
 									</button>
@@ -50,7 +50,8 @@
 	</form>
 	<script>
 		$(function () {
-			$('#contato').submit(trataSubmitAjax('/home'), loaderAlterar);
+			var loaderAlterar = ComeComeLoader($('#enviar .loader'), $('#enviar'));
+			$('#contato').submit(trataSubmitAjax('/home', loaderAlterar));
 		});
 	</script>
 	{% endblock %}

@@ -8,51 +8,52 @@
   </script>
 {% endblock %}
 {% block body %}
-                <form id="ramais" action="/ramais" method="post">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label>Tipos :</label>
-                                <select class="form-control" name="tipo">
-                                    <option value="Interno">Interno</option>
-                                    <option value="Casa">Casa</option>
-                                    <option value="Celular">Celular</option>
-                                    <option value="Notebook">Notebook</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label>Contato :</label>
-                                <select class="form-control" name="id_contato">
-																{% for contato in contatos %}
-																<option value="{{ contato.id }}">{{ contato.nome }}</option>
-																{% endfor %}
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label>Ramal :</label>
-                                <input type="text" id="input-ramal" name="ramal" value"" class="form-control"
-                                    autofocus autocomplete="off"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <button id="enviar" type="submit" value="Enviar" class="btn btn-success form-control">
-																	<span>Enviar</span>
-																	<span class="loader"></span>
-																</button>	
-                            </div>
-                        </div>
-                    </div>
-                </form>
-								<script>
-									$(function () {
-										$('#ramais').submit(trataSubmitAjax('/home'), loaderAlterar);
-									});
-		</script>
+<form id="ramais" action="/ramais" method="post">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>Tipos :</label>
+                <select class="form-control" name="tipo">
+                    <option value="Interno">Interno</option>
+                    <option value="Casa">Casa</option>
+                    <option value="Celular">Celular</option>
+                    <option value="Notebook">Notebook</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>Contato :</label>
+                <select class="form-control" name="id_contato">
+								{% for contato in contatos %}
+								<option value="{{ contato.id }}">{{ contato.nome }}</option>
+								{% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>Ramal :</label>
+                <input type="text" id="input-ramal" name="ramal" value"" class="form-control"
+                    autofocus autocomplete="off"/>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <div class="form-group">
+                <button id="enviar" type="submit" value="Enviar" class="btn btn-success form-control">
+									<span>Enviar</span>
+									<span class="loader"></span>
+								</button>	
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+$(function () {
+	var loaderAlterar = ComeComeLoader($('#enviar .loader'), $('#enviar'));
+	$('#ramais').submit(trataSubmitAjax('/home', loaderAlterar));
+});
+</script>
 {% endblock %}

@@ -25,7 +25,7 @@
 		<div class="row">
 			<div class="col-md-2">
 				<div class="form-group">
-					<button type="submit" class="btn btn-success form-control">
+					<button id="logar" type="submit" class="btn btn-success form-control">
 						<span>Logar</span>
 						<span class="loader"></span>
 					</button>
@@ -37,7 +37,8 @@
 </form>
 <script>
 $(function () {
-	$('#login').submit(trataSubmitAjax('/home'), loaderAlterar);
+	var loaderAlterar = ComeComeLoader($('#logar .loader'), $('#logar'));
+	$('#login').submit(trataSubmitAjax('/home', loaderAlterar));
 });
 </script>
 {% endblock %}

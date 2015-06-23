@@ -80,6 +80,53 @@ $app->get('/home', function (Request $request) use ($app) {
 		));
 })->before($temUsuario);
 
+$app->get('/admin', function (Request $request) use ($app) { 
+		return $app['twig']->render('admin.twig', array(
+			'error' => $request->get('error')
+		));
+})->before($temUsuario);
+
+$app->get('/permite', function (Request $request) use ($app) { 
+	$pdo = db();
+	$usuarioDao = new UsuarioDAO($pdo);
+	$todos_niveis = array(
+  	"0",
+  	"1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+    "13",
+    "14",
+    "15"
+	);
+	$usuarios = $usuarioDao->listar(array());
+		return $app['twig']->render('permite.twig', array(
+			'usuarios' => $usuarios,
+			'todos_niveis' => $todos_niveis,
+		));
+})->before($temUsuario);
+
+$app->post('/permite', function (Request $request) use ($app) {
+	$data = $request->request->all();
+	$pdo = db();
+  $usuarioDao = new UsuarioDAO($pdo);
+	$usuarioDao->nivel($data);
+
+	return $app->json(array('success' => true));
+});
+$app->get('/bloqueia', function (Request $request) use ($app) { 
+		return $app['twig']->render('bloqueia.twig', array(
+			'error' => $request->get('error')
+		));
+})->before($temUsuario);
 
 $app->get('/logout', function () use ($app) { 
 	$app['session']->clear();

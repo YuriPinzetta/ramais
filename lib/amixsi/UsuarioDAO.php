@@ -9,7 +9,8 @@ class UsuarioDAO
     public function __construct($pdo)
     {
         $this->pdo = $pdo;
-    }
+		}
+
     public function valida(array $params)
     {
         $login = $params['usuario'];
@@ -22,7 +23,8 @@ class UsuarioDAO
 						return $usuario['login'];;
         }
 				return null;
-    }
+		}
+		
     public function logado()
     {
         if (array_key_exists('usuario', $_SESSION) && $_SESSION['usuario'] != "") {
@@ -37,13 +39,40 @@ class UsuarioDAO
         $stmt = $this->pdo->prepare("select login from usuario where login = :login");
         $stmt->execute(array(':login' => $login));
         return $stmt->rowCount() > 0;
-    }
+		}
+
     public function cadastra(array $params)
     {
         $ilogin = $params['usuario'];
         $isenha = md5($params['senha'].".AMIX");
-        $stmt = $this->pdo->prepare("INSERT INTO usuario (login, senha)
-														VALUES (:ilogin, :isenha);");
+        $stmt = $this->pdo->prepare("INSERT INTO usuario (login, senha, nivel)
+														VALUES (:ilogin, :isenha, 15);");
         $stmt->execute(array(':ilogin' => $ilogin, 'isenha' => $isenha));
+		}
+
+    public function listar(array $params)
+    {
+        $id = !empty($params['id']) ? $params['id'] : null;
+        $login = !empty($params['login']) ? $params['login'] : null;
+        $filtros = array();
+        if ($id !== null) {
+            $filtros[] = "id = $id";
+        }
+        $stmt = $this->pdo->prepare('select id, login	from usuario'.(count($filtros) > 0 ? ' where '.implode(' and ', $filtros) : '').'');
+        $stmt->execute();
+        $usuarios_foreach = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $usuarios_return = array();
+        foreach ($usuarios_foreach as $usuario) {
+            $usuarios_return[] = Usuario::fromArray($usuario);
+				}
+        return $usuarios_return;
+		}
+
+    public function nivel(array $params)
+		{
+				$id = $params['id'];
+        $nivel = $params['niveis'];
+        $stmt = $this->pdo->prepare('update usuario set nivel=:nivel WHERE id = :id');
+        $stmt->execute(array(':nivel' => $nivel, ':id' => $id));
     }
 }
