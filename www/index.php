@@ -114,14 +114,6 @@ $app->get('/permite', function (Request $request) use ($app) {
 		));
 })->before($temUsuario);
 
-$app->post('/permite', function (Request $request) use ($app) {
-	$data = $request->request->all();
-	$pdo = db();
-  $usuarioDao = new UsuarioDAO($pdo);
-	$usuarioDao->nivel($data);
-
-	return $app->json(array('success' => true));
-});
 $app->get('/bloqueia', function (Request $request) use ($app) { 
 		return $app['twig']->render('bloqueia.twig', array(
 			'error' => $request->get('error')
@@ -312,5 +304,47 @@ $app->post('/cadastro', function (Request $request) use ($app) {
 $app->get('/cadastro', function (Request $request) use ($app) {
   return $app['twig']->render('cadastro.twig');
 })->before($temUsuario);
+
+$app->get('/cadastro/usuario/form', function (Request $request) use ($app) {
+  return $app['twig']->render('form.twig');
+});
+
+$app->post('/cadastro/usuario/form', function (Request $request) use ($app) {
+	$usuario = $request->request->get('usuario'); 
+	$senha = $request->request->get('senha'); 
+	$pusuario = array_sum($request->request->get('pusuario')); 
+	$pcontato = array_sum($request->request->get('pcontato')); 
+	$cadastro = array(
+		'usuario' => $usuario,
+		'senha' => $senha,
+		'pusuario' => $pusuario,
+		'pcontato' => $pcontato
+	);
+	$pdo = db();
+  $usuarioDao = new UsuarioDAO($pdo);
+	if (!$usuarioDao->verifica($cadastro)) {
+		$usuarioDao->cadastra($cadastro);
+		return $app->json(array('success' => true));
+	}
+	return $app->json(array(
+		'success' => false,
+		'message' => 'Usuário já existe.'
+	));
+});
+
+$app->get('/cadastro/usuario/table', function (Request $request) use ($app) {
+	$pdo = db();
+	$data = $request->request->all();
+	var_dump($data);
+	$usuarioDao = new UsuarioDAO($pdo);
+  $usuario = $usuarioDao->listar($data);
+	return $app['twig']->render('table.twig', array(
+	'usuario' => $usuario
+	));
+});
+
+$app->get('/cadastro/usuario', function (Request $request) use ($app) {
+  return $app['twig']->render('usuario.twig');
+});
 
 $app->run();

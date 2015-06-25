@@ -23,3 +23,7 @@ tr th{
 	background: no-repeat url('img/come-come.gif');
 	background-size: contain;
 }
+.margin{
+	margin-top: 25px;
+	margin-left: 25px;
+}

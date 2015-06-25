@@ -1,0 +1,28 @@
+{% extends 'layout.twig' %}
+
+{% block body %}
+<div class="container">
+	<div> 
+		{% include 'form.twig'%}
+	</div>
+	<div class="row">
+		<div class="col-md-3">
+			<div class="form-group">
+				<label>Filtro :</label>
+				<input type="text" name="contato" id="input_contato" value="" class="form-control" autocomplete="off" />
+			</div>
+		</div>
+		<div class="col-md-2">
+			<div class="form-group">
+				<button id="Enviar" type="submit" value="Consultar" class="btn btn-info form-control margin">
+					<span>Consultar</span>
+					<span class="loader"</span>
+				</button>	
+			</div>
+		</div>
+	</div>
+	<div> 
+		{% include 'table.twig'%}
+	</div>
+</div>
+{% endblock %}

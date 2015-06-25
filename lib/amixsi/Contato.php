@@ -11,7 +11,6 @@ class Contato
 
     public static function fromArray($dados)
     {
-				var_dump($dados);
         if (empty($dados['contato'])) {
             throw new \Exception('Contato não preenchido');
         }

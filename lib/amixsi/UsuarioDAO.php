@@ -45,9 +45,12 @@ class UsuarioDAO
     {
         $ilogin = $params['usuario'];
         $isenha = md5($params['senha'].".AMIX");
-        $stmt = $this->pdo->prepare("INSERT INTO usuario (login, senha, nivel)
-														VALUES (:ilogin, :isenha, 15);");
-        $stmt->execute(array(':ilogin' => $ilogin, 'isenha' => $isenha));
+        $perm_usuario = $params['pusuario'];
+        $perm_contato = $params['pcontato'];
+        $stmt = $this->pdo->prepare("INSERT INTO usuario (login, senha, perm_usuario, perm_contato)
+														VALUES (:ilogin, :isenha, :perm_usuario, :perm_contato);");
+				$stmt->execute(array(':ilogin' => $ilogin, 'isenha' => $isenha, 
+					':perm_usuario' => $perm_usuario, ':perm_contato' => $perm_contato));
 		}
 
     public function listar(array $params)
@@ -58,21 +61,21 @@ class UsuarioDAO
         if ($id !== null) {
             $filtros[] = "id = $id";
         }
-        $stmt = $this->pdo->prepare('select id, login	from usuario'.(count($filtros) > 0 ? ' where '.implode(' and ', $filtros) : '').'');
+        $stmt = $this->pdo->prepare('select id, login, senha, perm_usuario, perm_contato	from usuario'.(count($filtros) > 0 ? ' where '.implode(' and ', $filtros) : '').'');
         $stmt->execute();
         $usuarios_foreach = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         $usuarios_return = array();
-        foreach ($usuarios_foreach as $usuario) {
-            $usuarios_return[] = Usuario::fromArray($usuario);
+        foreach ($usuarios_foreach as $usuarios) {
+            $usuarios_return[] = Usuario::fromArray($usuarios);
 				}
-        return $usuarios_return;
+        return $usuarios;
 		}
 
-    public function nivel(array $params)
+    /*public function nivel(array $params)
 		{
 				$id = $params['id'];
         $nivel = $params['niveis'];
         $stmt = $this->pdo->prepare('update usuario set nivel=:nivel WHERE id = :id');
         $stmt->execute(array(':nivel' => $nivel, ':id' => $id));
-    }
+		}*/
 }

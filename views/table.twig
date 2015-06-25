@@ -1,0 +1,43 @@
+{% extends 'layout.twig' %}
+{% block body %}
+	<div class="table-responsive">
+			<table class="table table-striped table-bordered">
+				<tr>
+					<th>Usuário</th>
+					<th>Permissão Contato</th>
+					<th>Permissão Usuário</th>
+				</tr>
+				{% for usuarios in usuario %}
+				<tr>
+					<td>
+						<a href="/table?id={{ usuario.id }} ">
+							<span class="glyphicon glyphicon-edit" aria-hidden="true"> {{ usuario.login }} </span>
+						</a>
+					</td>
+					<td>
+						<label class="checkbox-inline">
+							<input type="checkbox" id="inlineCheckbox1" name"Consultar" value="1">Consultar
+						</label>
+						<label class="checkbox-inline">
+							<input type="checkbox" id="inlineCheckbox2" name="Inserir" value="2">Inserir
+						</label>
+						<label class="checkbox-inline">
+							<input type="checkbox" id="inlineCheckbox3" name"Alterar" value="4">Alterar
+						</label>
+					</td>	 
+					<td>
+						<label class="checkbox-inline">
+							<input type="checkbox" id="inlineCheckbox1" name"Consultar" value="1">Consultar
+						</label>
+						<label class="checkbox-inline">
+							<input type="checkbox" id="inlineCheckbox2" name="Inserir" value="2">Inserir
+						</label>
+						<label class="checkbox-inline">
+							<input type="checkbox" id="inlineCheckbox3" name"Alterar" value="4">Alterar
+						</label>
+					</td>
+				</tr>
+				{% endfor %}
+			</table>
+		</div>
+{% endblock %}
