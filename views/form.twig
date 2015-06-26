@@ -4,23 +4,7 @@
   	<div class="col-md-3">
       <div class="form-group">
         <label>Usuário :</label>
-				<input type="text" name="usuario" id="input_contato" value="" class="form-control" autocomplete="off" />
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="form-group">
-      <label>Permissão Contato :</label>
-				<div>
-					<label class="checkbox-inline">
-						<input type="checkbox" id="inlineCheckbox1" name="pcontato[]" value="1">Consultar
-					</label>
-					<label class="checkbox-inline">
-						<input type="checkbox" id="inlineCheckbox2" name="pcontato[]" value="2">Inserir
-					</label>
-					<label class="checkbox-inline">
-						<input type="checkbox" id="inlineCheckbox3" name="pcontato[]" value="4">Alterar
-					</label>
-				</div>
+				<input type="text" name="usuario" id="input_contato" value="{{ usuario is defined ? usuario.login }}" class="form-control" autocomplete="off" />
       </div>
     </div>
     <div class="col-md-3">
@@ -28,14 +12,30 @@
         <label>Permissão Usuário :</label>
 				<div>
 				<label class="checkbox-inline">
-					<input type="checkbox" id="inlineCheckbox1" name="pusuario[]" value="1">Consultar
+					<input type="checkbox" id="inlineCheckbox1" name="pusuario[]" value="1" {{ usuario is defined and usuario.hasPermUsuario('consultar') ? 'checked' }}>Consultar
 				</label>
 				<label class="checkbox-inline">
-					<input type="checkbox" id="inlineCheckbox2" name="pusuario[]" value="2">Inserir
+					<input type="checkbox" id="inlineCheckbox2" name="pusuario[]" value="2" {{ usuario is defined and usuario.hasPermUsuario('inserir') ? 'checked' }}>Inserir
 				</label>
 				<label class="checkbox-inline">
-					<input type="checkbox" id="inlineCheckbox3" name="pusuario[]" value="4">Alterar
+					<input type="checkbox" id="inlineCheckbox3" name="pusuario[]" value="4" {{ usuario is defined and usuario.hasPermUsuario('alterar') ? 'checked' }}>Alterar
 				</label>
+				</div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="form-group">
+      <label>Permissão Contato :</label>
+				<div>
+					<label class="checkbox-inline">
+						<input type="checkbox" id="inlineCheckbox1" name="pcontato[]" value="1" {{ usuario is defined and usuario.hasPermContato('consultar') ? 'checked' }}>Consultar
+					</label>
+					<label class="checkbox-inline">
+						<input type="checkbox" id="inlineCheckbox2" name="pcontato[]" value="2" {{ usuario is defined and usuario.hasPermContato('inserir') ? 'checked' }}>Inserir
+					</label>
+					<label class="checkbox-inline">
+						<input type="checkbox" id="inlineCheckbox3" name="pcontato[]" value="4" {{ usuario is defined and usuario.hasPermContato('alterar') ? 'checked' }}>Alterar
+					</label>
 				</div>
       </div>
     </div>
@@ -53,6 +53,14 @@
       <div class="form-group">
         <button id="enviar" type="submit" value="Enviar" class="btn btn-success form-control">
 					<span>Inserir</span>
+					<span class="loader"></span>
+				</button>	
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="form-group">
+        <button id="alterar" type="submit" value="alterar" class="btn btn-success form-control">
+					<span>Alterar</span>
 					<span class="loader"></span>
 				</button>	
       </div>

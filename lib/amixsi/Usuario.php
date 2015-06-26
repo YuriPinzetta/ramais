@@ -80,4 +80,16 @@ class Usuario
     {
         $this->perm_usuario = $perm_usuario;
 		}
+
+		public function hasPermUsuario($tipo)
+		{
+				$perms = array('consultar' => 1, 'inserir' => 2, 'alterar' => 4);
+				return $perms[$tipo] & $this->getPusuario() ? true : false;
+		}
+
+		public function hasPermContato($tipo)
+		{
+				$perms = array('consultar' => 1, 'inserir' => 2, 'alterar' => 4);
+				return $perms[$tipo] & $this->getPcontato() ? true : false;
+		}
 }

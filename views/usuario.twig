@@ -3,26 +3,37 @@
 {% block body %}
 <div class="container">
 	<div> 
-		{% include 'form.twig'%}
+		{% include 'form.twig' %}
 	</div>
 	<div class="row">
 		<div class="col-md-3">
 			<div class="form-group">
 				<label>Filtro :</label>
-				<input type="text" name="contato" id="input_contato" value="" class="form-control" autocomplete="off" />
+				<input type="text" name="filtro" id="filtro" value="" class="form-control" autocomplete="off" />
 			</div>
 		</div>
 		<div class="col-md-2">
 			<div class="form-group">
-				<button id="Enviar" type="submit" value="Consultar" class="btn btn-info form-control margin">
+				<button id="consultar" type="submit" value="Consultar" class="btn btn-info form-control margin">
 					<span>Consultar</span>
 					<span class="loader"</span>
 				</button>	
 			</div>
 		</div>
 	</div>
-	<div> 
-		{% include 'table.twig'%}
-	</div>
+	<div id="tabela"></div>
 </div>
+<script>
+$(function () {
+		$('#consultar').click(function () {
+			$('#tabela').load('usuario/table?filtro=' + encodeURIComponent($('#filtro').val())); 
+		});
+		$('#tabela').on('click', 'a', function (e) { 
+			var $a = $(e.currentTarget);
+			var href = $a.prop('href');
+			e.preventDefault();
+			$('#form').load(href);
+		});
+});
+</script>
 {% endblock %}

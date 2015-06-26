@@ -306,7 +306,15 @@ $app->get('/cadastro', function (Request $request) use ($app) {
 })->before($temUsuario);
 
 $app->get('/cadastro/usuario/form', function (Request $request) use ($app) {
-  return $app['twig']->render('form.twig');
+	$id = $request->query->get('id');
+	$pdo = db();
+	$usuarioDao = new UsuarioDAO($pdo);
+	$params = array();
+	$usuario = $usuarioDao->consulta($id);
+	if ($usuario) {
+		$params['usuario'] = $usuario;
+	}
+	return $app['twig']->render('form.twig', $params);
 });
 
 $app->post('/cadastro/usuario/form', function (Request $request) use ($app) {
@@ -333,13 +341,12 @@ $app->post('/cadastro/usuario/form', function (Request $request) use ($app) {
 });
 
 $app->get('/cadastro/usuario/table', function (Request $request) use ($app) {
+	$data = $request->query->all();
 	$pdo = db();
-	$data = $request->request->all();
-	var_dump($data);
 	$usuarioDao = new UsuarioDAO($pdo);
-  $usuario = $usuarioDao->listar($data);
+	$usuarios = $usuarioDao->listar($data);
 	return $app['twig']->render('table.twig', array(
-	'usuario' => $usuario
+		'usuarios' => $usuarios
 	));
 });
 
