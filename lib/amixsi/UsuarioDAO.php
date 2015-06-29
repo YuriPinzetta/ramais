@@ -106,4 +106,21 @@ class UsuarioDAO
 			return null;
 		}
 
+    public function altera(array $params)
+    {
+        $id = $params['id'];
+        $login = $params['usuario'];
+        $senha = $params['senha'];
+        $perm_usuario = $params['pusuario'];
+        $perm_contato = $params['pcontato'];
+				$stmt = $this->pdo->prepare('
+					update usuario set
+					login=:login,
+					senha=:senha,
+					perm_usuario=:perm_usuario,
+					perm_contato=:perm_contato
+					WHERE id = :id');
+				$stmt->execute(array(':login' => $login, ':senha' => $senha, ':perm_usuario' => $perm_usuario,
+					':perm_contato' => $perm_contato, ':id' => $id));
+    }
 }

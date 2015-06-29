@@ -53,6 +53,10 @@ function submit(event) {
 
 function ComeComeLoader($loader, $btn){
 	return {
+		set: function (loader, btn) {
+			$loader = loader || $loader;
+			$btn = btn || $btn;
+		},
 		load: function (on) {
 			if (on) {
 				$loader.addClass('loader-show');

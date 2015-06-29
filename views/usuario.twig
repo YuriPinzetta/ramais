@@ -2,7 +2,7 @@
 
 {% block body %}
 <div class="container">
-	<div> 
+	<div id="form"> 
 		{% include 'form.twig' %}
 	</div>
 	<div class="row">
@@ -25,15 +25,54 @@
 </div>
 <script>
 $(function () {
-		$('#consultar').click(function () {
-			$('#tabela').load('usuario/table?filtro=' + encodeURIComponent($('#filtro').val())); 
-		});
+
+		var loaderInserir = ComeComeLoader($('#enviar .loader'), $('#enviar'));
+		var loaderAlterar = ComeComeLoader($('#alterar .loader'), $('#alterar'));
+
+		$('#consultar').click(consultar);
 		$('#tabela').on('click', 'a', function (e) { 
 			var $a = $(e.currentTarget);
 			var href = $a.prop('href');
 			e.preventDefault();
-			$('#form').load(href);
+			carregarForm(href);
 		});
+		$('#form').on('click', '#inserir', trataSubmitAjax('/home', loaderInserir));
+		$('#form').on('click', '#alterar', alteraRedirect('/cadastro/usuario', loaderAlterar, aposAlterar));
+
+		function consultar() {
+			$('#tabela').load('usuario/table?filtro=' + encodeURIComponent($('#filtro').val())); 
+		}
+
+		function aposAlterar() {
+			consultar();
+			carregarForm('usuario/form');
+		}
+
+		function carregarForm(href) {
+			$('#form').load(href, function () {
+				loaderInserir.set($('#enviar .loader'), $('#enviar'));
+				loaderAlterar.set($('#alterar .loader'), $('#alterar'));
+			});
+		}
+
+		function alteraRedirect(url, loader, complete) {
+			return function (e) {
+				e.preventDefault();
+				loader.load(true);
+				$.ajax({
+					type: "PUT",
+					url: url,
+					data: $('#form > form').serialize(),
+					success: success
+				});
+				function success(data) {
+					loader.load(false);
+					if (data.success) {
+						complete();
+					}
+				}
+			};
+		}
 });
 </script>
 {% endblock %}

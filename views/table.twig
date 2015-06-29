@@ -33,6 +33,9 @@
 						<label class="checkbox-inline">
 							<input type="checkbox" id="inlineCheckbox3" name"Alterar" value="4" {{ usuario.hasPermContato('alterar')  ? 'checked' }} disabled>Alterar
 						</label>
+							<button class="btn btn-default pull-right">
+								<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+							</button>
 					</td>
 				</tr>
 				{% endfor %}

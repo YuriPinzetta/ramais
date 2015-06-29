@@ -1,5 +1,4 @@
-<div class="container">
-<form id="form" method="post">
+<form method="post">
 	<div class="row">
   	<div class="col-md-3">
       <div class="form-group">
@@ -47,30 +46,39 @@
 				<input type="text" name="senha" id="input_contato" value="" class="form-control" autocomplete="off" />
       </div>
     </div>
-	</div>
-  <div class="row">
-    <div class="col-md-2">
+    <div class="col-md-1">
       <div class="form-group">
-        <button id="enviar" type="submit" value="Enviar" class="btn btn-success form-control">
-					<span>Inserir</span>
-					<span class="loader"></span>
-				</button>	
+				<input type="hidden" name="id" id="input_contato" value="{{ usuario is defined ? usuario.id }}" class="form-control" autocomplete="off" />
       </div>
     </div>
+	</div>
+  <div class="row">
+		{% if usuario is defined %}
     <div class="col-md-2">
       <div class="form-group">
-        <button id="alterar" type="submit" value="alterar" class="btn btn-success form-control">
+        <button id="alterar" class="btn btn-success form-control">
 					<span>Alterar</span>
 					<span class="loader"></span>
 				</button>	
       </div>
     </div>
+    <div class="col-md-2">
+      <div class="form-group">
+        <button id="novo" class="btn btn-warning form-control">
+					<span>Novo</span>
+					<span class="loader"></span>
+				</button>	
+      </div>
+    </div>
+		{% else %}
+    <div class="col-md-2">
+      <div class="form-group">
+        <button id="inserir" class="btn btn-success form-control">
+					<span>Inserir</span>
+					<span class="loader"></span>
+				</button>	
+      </div>
+    </div>
+		{% endif %}
   </div>
 </form>
-</div>
-<script>
-$(function () {
-	var loaderAlterar = ComeComeLoader($('#enviar .loader'), $('#enviar'));
-	$('#form').submit(trataSubmitAjax('/home', loaderAlterar));
-});
-</script>
