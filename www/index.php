@@ -80,46 +80,6 @@ $app->get('/home', function (Request $request) use ($app) {
 		));
 })->before($temUsuario);
 
-$app->get('/admin', function (Request $request) use ($app) { 
-		return $app['twig']->render('admin.twig', array(
-			'error' => $request->get('error')
-		));
-})->before($temUsuario);
-
-$app->get('/permite', function (Request $request) use ($app) { 
-	$pdo = db();
-	$usuarioDao = new UsuarioDAO($pdo);
-	$todos_niveis = array(
-  	"0",
-  	"1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "10",
-    "11",
-    "12",
-    "13",
-    "14",
-    "15"
-	);
-	$usuarios = $usuarioDao->listar(array());
-		return $app['twig']->render('permite.twig', array(
-			'usuarios' => $usuarios,
-			'todos_niveis' => $todos_niveis,
-		));
-})->before($temUsuario);
-
-$app->get('/bloqueia', function (Request $request) use ($app) { 
-		return $app['twig']->render('bloqueia.twig', array(
-			'error' => $request->get('error')
-		));
-})->before($temUsuario);
-
 $app->get('/logout', function () use ($app) { 
 	$app['session']->clear();
 	return $app->redirect('/login');
@@ -287,24 +247,6 @@ $app->get('/edicao', function (Request $request) use ($app) {
 	));
 })->before($temUsuario);
 
-$app->post('/cadastro', function (Request $request) use ($app) {
-	$data = $request->request->all();
-	$pdo = db();
-  $usuarioDao = new UsuarioDAO($pdo);
-	if (!$usuarioDao->verifica($data)) {
-		$usuarioDao->cadastra($data);
-		return $app->json(array('success' => true));
-	}
-	return $app->json(array(
-		'success' => false,
-		'message' => 'Usuário já existe.'
-	));
-})->before($temUsuario);
-
-$app->get('/cadastro', function (Request $request) use ($app) {
-  return $app['twig']->render('cadastro.twig');
-})->before($temUsuario);
-
 $app->get('/cadastro/usuario/form', function (Request $request) use ($app) {
 	$id = $request->query->get('id');
 	$pdo = db();
@@ -315,7 +257,7 @@ $app->get('/cadastro/usuario/form', function (Request $request) use ($app) {
 		$params['usuario'] = $usuario;
 	}
 	return $app['twig']->render('form.twig', $params);
-});
+})->before($temUsuario);
 
 $app->post('/cadastro/usuario/form', function (Request $request) use ($app) {
 	$usuario = $request->request->get('usuario'); 
@@ -338,7 +280,7 @@ $app->post('/cadastro/usuario/form', function (Request $request) use ($app) {
 		'success' => false,
 		'message' => 'Usuário já existe.'
 	));
-});
+})->before($temUsuario);
 
 $app->get('/cadastro/usuario/table', function (Request $request) use ($app) {
 	$data = $request->query->all();
@@ -348,11 +290,11 @@ $app->get('/cadastro/usuario/table', function (Request $request) use ($app) {
 	return $app['twig']->render('table.twig', array(
 		'usuarios' => $usuarios
 	));
-});
+})->before($temUsuario);
 
 $app->get('/cadastro/usuario', function (Request $request) use ($app) {
   return $app['twig']->render('usuario.twig');
-});
+})->before($temUsuario);
 
 $app->post('/cadastro/usuario', function (Request $request) use ($app) {
 	$usuario = $request->request->get('usuario'); 
@@ -375,12 +317,15 @@ $app->post('/cadastro/usuario', function (Request $request) use ($app) {
 		'success' => false,
 		'message' => 'Usuário já existe.'
 	));
-});
+})->before($temUsuario);
 
 $app->put('/cadastro/usuario', function (Request $request) use ($app) {
 	$id = $request->request->get('id'); 
 	$usuario = $request->request->get('usuario'); 
-	$senha = $request->request->get('senha'); 
+	$senha = $request->request->get('senha');
+	if($senha == ""){
+		$senha = null;
+	}
 	$pusuario = array_sum($request->request->get('pusuario')); 
 	$pcontato = array_sum($request->request->get('pcontato')); 
 	$cadastro = array(
@@ -392,14 +337,24 @@ $app->put('/cadastro/usuario', function (Request $request) use ($app) {
 	);
 	$pdo = db();
   $usuarioDao = new UsuarioDAO($pdo);
-	if (!$usuarioDao->verifica($cadastro)) {
+	if ($usuarioDao->verifica($cadastro)) {
 		$usuarioDao->altera($cadastro);
 		return $app->json(array('success' => true));
 	}
 	return $app->json(array(
 		'success' => false,
-		'message' => 'Usuário já existe.'
+		'message' => 'Usuário não existe.'
 	));
-});
+})->before($temUsuario);
+
+$app->delete('/cadastro/usuario', function (Request $request) use ($app) {
+	$id = $request->query->get('id');
+	$pdo = db();
+  $usuarioDao = new UsuarioDAO($pdo);
+	$usuarioDao->deleta($id);
+
+	return $app->json(array('success' => true));
+})->before($temUsuario);
+
 
 $app->run();

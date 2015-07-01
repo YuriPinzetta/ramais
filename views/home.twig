@@ -1,45 +1,45 @@
 {% extends 'layout.twig' %}
 
 {% block body %}
-				{% if error != '' %}
-				<div class="row">
-						<div class="col-md-12">Ocorreu um erro na execução</div>
+	{% if error != '' %}
+	<div class="row">
+			<div class="col-md-12">Ocorreu um erro na execução</div>
+	</div>
+	{% endif %}
+	<div class="container">
+		<div class="row">
+			<div class="form-group">
+				<div class="col-md-4">
+					<a href="/contato">
+						<button class="btn btn-default form-control">
+							<span>Cadastrar Contato</span>
+						</button>
+					</a>
 				</div>
-				{% endif %}
-				<div class="row">
-					<div class="form-group">
-						<div class="col-md-4">
-							<a href="/contato">
-								<button class="btn btn-default form-control">
-									Contato
-								</button>
-							</a>
-						</div>
-						<div class="col-md-4">
-							<a href="/ramais">
-								<button type="button" class="btn btn-default form-control">
-									<span>Ramais</span>
-								</button>
-							</a>
-						</div>
-						<div class="col-md-4">
-							<a href="/consulta">
-								<button type="button" class="btn btn-default form-control">
-									<span> Consultar Ramais</span>
-								</button>
-							</a>
-						</div>
-						<div class="col-md-4">
-						</div>
-						<div class="col-md-4">
-							<a href="/cadastro">
-								<button type="button" class="btn btn-default form-control botao">
-									<span>Cadastrar</span>
-								</button>
-							</a>
-						</div>
-					</div>
+				<div class="col-md-4">
+					<a href="/ramais">
+						<button type="button" class="btn btn-default form-control">
+							<span>Cadastrar Ramais</span>
+						</button>
+					</a>
 				</div>
+				<div class="col-md-4">
+					<a href="/consulta">
+						<button type="button" class="btn btn-default form-control">
+							<span> Consultar / Filtrar - Ramais</span>
+						</button>
+					</a>
+				</div>
+				<div class="col-md-4">
+				</div>
+				<div class="col-md-4">
+					<a href="/cadastro/usuario">
+						<button type="button" class="btn btn-default form-control botao">
+							<span>Cadastrar / Filtrar - Usuário</span>
+						</button>
+					</a>
+				<div>
 			</div>
 		</div>
+	</div>
 {% endblock %}

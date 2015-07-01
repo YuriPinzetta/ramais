@@ -1,43 +1,49 @@
-	<div class="table-responsive">
-			<table class="table table-striped table-bordered">
-				<tr>
-					<th>Usuário</th>
-					<th>Permissão Usuário</th>
-					<th>Permissão Contato</th>
-				</tr>
-				{% for usuario in usuarios %}
-				<tr>
-					<td>
-						<a href="/cadastro/usuario/form?id={{ usuario.id }} ">
-							<span class="glyphicon glyphicon-edit" aria-hidden="true"> {{ usuario.login }} </span>
-						</a>
-					</td>
-					<td>
-						<label class="checkbox-inline">
-							<input type="checkbox" id="inlineCheckbox1" name"Consultar" value="1" {{ usuario.hasPermUsuario('consultar')  ? 'checked' }} disabled>Consultar
-						</label>
-						<label class="checkbox-inline">
-							<input type="checkbox" id="inlineCheckbox2" name="Inserir" value="2" {{ usuario.hasPermUsuario('inserir')  ? 'checked' }} disabled>Inserir
-						</label>
-						<label class="checkbox-inline">
-							<input type="checkbox" id="inlineCheckbox3" name"Alterar" value="4" {{ usuario.hasPermUsuario('alterar')  ? 'checked' }} disabled>Alterar
-						</label>
-					</td>	 
-					<td>
-						<label class="checkbox-inline">
-							<input type="checkbox" id="inlineCheckbox1" name"Consultar" value="1" {{ usuario.hasPermContato('consultar')  ? 'checked' }} disabled>Consultar
-						</label>
-						<label class="checkbox-inline">
-							<input type="checkbox" id="inlineCheckbox2" name="Inserir" value="2" {{ usuario.hasPermContato('inserir')  ? 'checked' }} disabled>Inserir
-						</label>
-						<label class="checkbox-inline">
-							<input type="checkbox" id="inlineCheckbox3" name"Alterar" value="4" {{ usuario.hasPermContato('alterar')  ? 'checked' }} disabled>Alterar
-						</label>
-							<button class="btn btn-default pull-right">
-								<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-							</button>
-					</td>
-				</tr>
-				{% endfor %}
-			</table>
-		</div>
+<div class="table-responsive">
+	<table class="table table-striped table-bordered">
+		<tr>
+			<th>Usuário</th>
+			<th>Permissão Usuário</th>
+			<th>Permissão Contato</th>
+		</tr>
+		{% for usuario in usuarios %}
+		<tr>
+			<td>
+				<a class="edit" href="/cadastro/usuario/form?id={{ usuario.id }} ">
+					<span class="glyphicon glyphicon-edit" aria-hidden="true"> {{ usuario.login }} </span>
+				</a>
+			</td>
+			<td>
+				<label class="checkbox-inline">
+					<input type="checkbox" id="inlineCheckbox1" name"Consultar" value="1" {{ usuario.hasPermUsuario('consultar')  ? 'checked' }} disabled>Consultar
+				</label>
+				<label class="checkbox-inline">
+					<input type="checkbox" id="inlineCheckbox2" name="Inserir" value="2" {{ usuario.hasPermUsuario('inserir')  ? 'checked' }} disabled>Inserir
+				</label>
+				<label class="checkbox-inline">
+					<input type="checkbox" id="inlineCheckbox3" name"Alterar" value="4" {{ usuario.hasPermUsuario('alterar')  ? 'checked' }} disabled>Alterar
+				</label>
+			</td>	 
+			<td>
+				<label class="checkbox-inline">
+					<input type="checkbox" id="inlineCheckbox1" name"Consultar" value="1" {{ usuario.hasPermContato('consultar')  ? 'checked' }} disabled>Consultar
+				</label>
+				<label class="checkbox-inline">
+					<input type="checkbox" id="inlineCheckbox2" name="Inserir" value="2" {{ usuario.hasPermContato('inserir')  ? 'checked' }} disabled>Inserir
+				</label>
+				<label class="checkbox-inline">
+					<input type="checkbox" id="inlineCheckbox3" name"Alterar" value="4" {{ usuario.hasPermContato('alterar')  ? 'checked' }} disabled>Alterar
+				</label>
+				<!--
+				<a class="delete" href="/cadastro/usuario?id={{ usuario.id }}">
+				-->
+				<button class="btn btn-default pull-right delete" value="{{ usuario.id }}">
+					<span class="glyphicon glyphicon-trash" aria-hidden="true" style="color: red"></span>
+				</button>
+				<!--
+				</a>
+				-->
+			</td>
+		</tr>
+		{% endfor %}
+	</table>
+</div>

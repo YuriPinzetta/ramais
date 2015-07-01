@@ -1,85 +1,85 @@
 {% extends 'layout.twig' %}
 {% block body %}
-				<form id="consulta">
-					<div class="row">
-						<div class="col-md-3">
-							<div class="form-group">
-								<label>Contato :</label>
-								<select class="form-control" name="id_contato">
-									<option value="">Todos</option>
-									{% for contato in todos_contatos %}
-									<option value="{{ contato.id }}" {{contato.id == contato_selecionado ? 'selected' : ''}}>
-										{{ contato.nome}}
-									</option>
-										{% endfor %}
-								</select>
-							</div>
-						</div>
-						<div class="col-md-3">
-							<div class="form-group">
-								<label>Cargos :</label>
-								<select class="form-control" name="cargos">
-									<option value="">Todos</option>
-    							{% for cargo in todos_cargos %}
-									<option value="{{ cargo.cargos }}" {{ cargo.cargos == cargo_selecionado ? 'selected' : ''}}>
-										{{ cargo.cargos }}
-									</option>
-									{% endfor %}
-								</select>
-							</div>
-						</div>
-						<div class="col-md-3">
-							<div class="form-group">
-								<label>Tipos :</label>
-								<select class="form-control" name="tipos">
-									<option value="">Todos</option>
-									{% for tipos in todos_tipos %}
-									<option value="{{ tipos }}" {{ tipos_selecionado == tipos ? 'selected' : ''}}>
-										{{ tipos }}
-									</option>
-									{% endfor %}
-								</select>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-2">
-							<div class="form-group">
-								<button id="enviar" type="submit" value="Enviar" class="btn btn-success form-control">
-									<span>Enviar</span>
-								</button>
-							</div>
-						</div>
-					</div>
-				</form>
-				<div class="table-responsive">
-					{% if contatos %}
-					<table class="table table-striped table-bordered">
-						<tr>
-							<th>Contato</th>
-							<th>Cargo</th>
-							<th>Tipo / Ramal</th>
-						</tr>
-		{% for contato in contatos %}
-						<tr>
-							<td>
-								<a href="/edicao?id_contato={{ contato.id }}">
-									<span class="glyphicon glyphicon-edit" aria-hidden="true"> {{ contato.Nome }}</span>
-								</a>
-							</td>
-							<td> {{ contato.Cargo }}</td>
-							<td>
-								<ul>
-								{% for ramal in contato.Ramais %}
-								<li> {{ ramal.Tipo }} - {{ ramal.Numero }} </li>
+	<div class="container">
+		<form id="consulta">
+			<div class="row">
+				<div class="col-md-3">
+					<div class="form-group">
+						<label>Contato :</label>
+						<select class="form-control" name="id_contato">
+							<option value="">Todos</option>
+							{% for contato in todos_contatos %}
+							<option value="{{ contato.id }}" {{contato.id == contato_selecionado ? 'selected' : ''}}>
+								{{ contato.nome}}
+							</option>
 								{% endfor %}
-								</ul>
-							</td>
-						</tr>
-						{% endfor %}
-					</table>
-				{% endif %}
+						</select>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="form-group">
+						<label>Cargos :</label>
+						<select class="form-control" name="cargos">
+							<option value="">Todos</option>
+    					{% for cargo in todos_cargos %}
+							<option value="{{ cargo.cargos }}" {{ cargo.cargos == cargo_selecionado ? 'selected' : ''}}>
+								{{ cargo.cargos }}
+							</option>
+							{% endfor %}
+						</select>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="form-group">
+						<label>Tipos :</label>
+						<select class="form-control" name="tipos">
+							<option value="">Todos</option>
+							{% for tipos in todos_tipos %}
+							<option value="{{ tipos }}" {{ tipos_selecionado == tipos ? 'selected' : ''}}>
+								{{ tipos }}
+							</option>
+							{% endfor %}
+						</select>
+					</div>
 				</div>
 			</div>
+			<div class="row">
+				<div class="col-md-2">
+					<div class="form-group">
+						<button id="enviar" type="submit" value="Enviar" class="btn btn-success form-control">
+							<span>Enviar</span>
+						</button>
+					</div>
+				</div>
+			</div>
+		</form>
+		<div class="table-responsive">
+			{% if contatos %}
+			<table class="table table-striped table-bordered">
+				<tr>
+					<th>Contato</th>
+					<th>Cargo</th>
+					<th>Tipo / Ramal</th>
+				</tr>
+				{% for contato in contatos %}
+				<tr>
+					<td>
+						<a href="/edicao?id_contato={{ contato.id }}">
+							<span class="glyphicon glyphicon-edit" aria-hidden="true"> {{ contato.Nome }}</span>
+						</a>
+					</td>
+					<td> {{ contato.Cargo }}</td>
+					<td>
+						<ul>
+						{% for ramal in contato.Ramais %}
+						<li> {{ ramal.Tipo }} - {{ ramal.Numero }} </li>
+						{% endfor %}
+						</ul>
+					</td>
+				</tr>
+				{% endfor %}
+			</table>
+		{% endif %}
 		</div>
+	</div>
 {% endblock %}

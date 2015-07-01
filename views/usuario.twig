@@ -30,7 +30,7 @@ $(function () {
 		var loaderAlterar = ComeComeLoader($('#alterar .loader'), $('#alterar'));
 
 		$('#consultar').click(consultar);
-		$('#tabela').on('click', 'a', function (e) { 
+		$('#tabela').on('click', 'a.edit', function (e) { 
 			var $a = $(e.currentTarget);
 			var href = $a.prop('href');
 			e.preventDefault();
@@ -38,6 +38,13 @@ $(function () {
 		});
 		$('#form').on('click', '#inserir', trataSubmitAjax('/home', loaderInserir));
 		$('#form').on('click', '#alterar', alteraRedirect('/cadastro/usuario', loaderAlterar, aposAlterar));
+		$('#form').change('#permiteSenha', function(){
+			if($('#permiteSenha').prop('checked')){
+				$('#inputSenha').prop('disabled', false);	
+			}else{
+				$('#inputSenha').prop('disabled', true);	
+			}
+		});
 
 		function consultar() {
 			$('#tabela').load('usuario/table?filtro=' + encodeURIComponent($('#filtro').val())); 
@@ -73,6 +80,21 @@ $(function () {
 				}
 			};
 		}
+		$('#tabela').on('click', '.delete', function (e) { 
+			var $btn = $(e.currentTarget);
+			var id = $btn.prop('value');
+			e.preventDefault();
+			$.ajax({
+				type: "DELETE",
+				url: '/cadastro/usuario?id=' + id,
+				success: success
+			});
+			function success(data) {
+				if (data.success) {
+					consultar();
+				}
+			}
+		});
 });
 </script>
 {% endblock %}

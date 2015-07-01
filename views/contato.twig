@@ -16,42 +16,44 @@
   </script>
 {% endblock %}
 {% block body %}
-	{% for m in message %}
-	<script>alert('{{ m }}');</script>
-	{% endfor %}
-	<form id="contato" action="/contato" method="post" id="salva_form">
-			<div class="row">
-					<div class="col-md-4">
-							<div class="form-group">
-									<label>Cargos :</label>
-									<input type="text" name="cargos" max-length="50" class="form-control" id="input_cargos"
-										 autofocus autocomplete="off"><br>
-									<div><span id="total"></span> Restantes</div>
-							</div>
-					</div>
-					<div class="col-md-4" id="coluna_contato">
-							<div class="form-group">
-									<label>Nome do Contato :</label>
-									<input type="text" name="contato" id="input_contato" value="" class="form-control"
-										 autocomplete="off" />
-							</div>
-					</div>
-			</div>
-			<div class="row">
-					<div class="col-md-2">
-							<div class="form-group">
-									<button id="enviar" type="submit" value="Enviar" class="btn btn-success form-control">
-										<span>Enviar</span>
-										<span class="loader"></span>
-									</button>
-							</div>
-					</div>
-			</div>
-	</form>
+	<div class="container">
+		{% for m in message %}
+		<script>alert('{{ m }}');</script>
+		{% endfor %}
+		<form id="contato" action="/contato" method="post" id="salva_form">
+				<div class="row">
+						<div class="col-md-4">
+								<div class="form-group">
+										<label>Cargos :</label>
+										<input type="text" name="cargos" max-length="50" class="form-control" id="input_cargos"
+											 autofocus autocomplete="off"><br>
+										<div><span id="total"></span> Restantes</div>
+								</div>
+						</div>
+						<div class="col-md-4" id="coluna_contato">
+								<div class="form-group">
+										<label>Nome do Contato :</label>
+										<input type="text" name="contato" id="input_contato" value="" class="form-control"
+											 autocomplete="off" />
+								</div>
+						</div>
+				</div>
+				<div class="row">
+						<div class="col-md-2">
+								<div class="form-group">
+										<button id="enviar" type="submit" value="Enviar" class="btn btn-success form-control">
+											<span>Enviar</span>
+											<span class="loader"></span>
+										</button>
+								</div>
+						</div>
+				</div>
+		</form>
+	</div>
 	<script>
 		$(function () {
 			var loaderAlterar = ComeComeLoader($('#enviar .loader'), $('#enviar'));
 			$('#contato').submit(trataSubmitAjax('/home', loaderAlterar));
 		});
 	</script>
-	{% endblock %}
+{% endblock %}

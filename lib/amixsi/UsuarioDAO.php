@@ -110,9 +110,11 @@ class UsuarioDAO
     {
         $id = $params['id'];
         $login = $params['usuario'];
-        $senha = $params['senha'];
+				$senha = !empty($params['senha']) ? $params['senha'] : null; 
+        $csenha = md5($senha.".AMIX");
         $perm_usuario = $params['pusuario'];
-        $perm_contato = $params['pcontato'];
+				$perm_contato = $params['pcontato'];
+				if(!(is_null($senha))){
 				$stmt = $this->pdo->prepare('
 					update usuario set
 					login=:login,
@@ -120,7 +122,22 @@ class UsuarioDAO
 					perm_usuario=:perm_usuario,
 					perm_contato=:perm_contato
 					WHERE id = :id');
-				$stmt->execute(array(':login' => $login, ':senha' => $senha, ':perm_usuario' => $perm_usuario,
+				$stmt->execute(array(':login' => $login, ':senha' => $csenha, ':perm_usuario' => $perm_usuario,
 					':perm_contato' => $perm_contato, ':id' => $id));
-    }
+				}else{
+				$stmt = $this->pdo->prepare('
+					update usuario set
+					login=:login,
+					perm_usuario=:perm_usuario,
+					perm_contato=:perm_contato
+					WHERE id = :id');
+				$stmt->execute(array(':login' => $login, ':perm_usuario' => $perm_usuario, ':perm_contato' => $perm_contato, ':id' => $id));
+				}
+		}
+
+		public function deleta($id)
+		{
+			$stmt = $this->pdo->prepare('delete from usuario where id = :id');
+			$stmt->execute(array(':id' => $id));
+		}
 }
