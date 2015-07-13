@@ -4,6 +4,11 @@ namespace amixsi;
 
 class Usuario
 {
+
+		const CONSULTAR = 1;
+		const INSERIR = 2;
+		const ALTERAR = 4;
+
     private $id;
     private $login;
 		private $senha;
@@ -11,7 +16,7 @@ class Usuario
 		private $perm_usuario;
 
     public static function fromArray($dados)
-    {
+		{
         if (empty($dados['login'])) {
             throw new \Exception('Login não preenchido');
         }
@@ -83,13 +88,13 @@ class Usuario
 
 		public function hasPermUsuario($tipo)
 		{
-				$perms = array('consultar' => 1, 'inserir' => 2, 'alterar' => 4);
+				$perms = array('consultar' => self::CONSULTAR, 'inserir' => self::INSERIR, 'alterar' => self::ALTERAR);
 				return $perms[$tipo] & $this->getPusuario() ? true : false;
 		}
 
 		public function hasPermContato($tipo)
 		{
-				$perms = array('consultar' => 1, 'inserir' => 2, 'alterar' => 4);
+				$perms = array('consultar' => self::CONSULTAR, 'inserir' => self::INSERIR, 'alterar' => self::ALTERAR);
 				return $perms[$tipo] & $this->getPcontato() ? true : false;
 		}
 }

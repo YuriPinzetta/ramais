@@ -11,7 +11,7 @@
 					</button>
 					<a class="navbar-brand" href="/home">AMIX</a>
 					{% if (app.session.get('usuario')) %}
-						<p class="navbar-text">Bem-vindo, {{ app.session.get('usuario') }}</p>
+						<p class="navbar-text">Bem-vindo, {{ app.session.get('usuario').login }}</p>
 					{% endif %}
 				</div>
 				{% if (app.session.get('usuario')) %}

@@ -64,9 +64,13 @@
 				{% for contato in contatos %}
 				<tr>
 					<td>
+						{% if hasAlterar %}
 						<a href="/edicao?id_contato={{ contato.id }}">
+						{% endif %}
 							<span class="glyphicon glyphicon-edit" aria-hidden="true"> {{ contato.Nome }}</span>
+						{% if hasAlterar %}
 						</a>
+						{% endif %}
 					</td>
 					<td> {{ contato.Cargo }}</td>
 					<td>

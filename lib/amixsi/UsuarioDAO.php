@@ -15,12 +15,12 @@ class UsuarioDAO
     {
         $login = $params['usuario'];
         $senha = md5($params['senha'].".AMIX");
-        $stmt  = $this->pdo->prepare("select login from usuario where login = :login and senha = :senha");
+        $stmt  = $this->pdo->prepare("select id, login from usuario where login = :login and senha = :senha");
         $stmt->execute(array(':login' => $login, ':senha' => $senha));
         $nlinha = $stmt->rowCount();
         if ($nlinha > 0) {
             $usuario = $stmt->fetch(\PDO::FETCH_ASSOC);
-						return $usuario['login'];;
+						return $usuario;
         }
 				return null;
 		}

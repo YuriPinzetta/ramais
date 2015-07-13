@@ -3,8 +3,11 @@
 {% block body %}
 <div class="container">
 	<div id="form"> 
+		{% if hasInserir %}
 		{% include 'form.twig' %}
+		{% endif %}
 	</div>
+	{% if HasConsultar %}
 	<div class="row">
 		<div class="col-md-3">
 			<div class="form-group">
@@ -22,6 +25,7 @@
 		</div>
 	</div>
 	<div id="tabela"></div>
+	{% endif %}
 </div>
 <script>
 $(function () {
@@ -36,7 +40,7 @@ $(function () {
 			e.preventDefault();
 			carregarForm(href);
 		});
-		$('#form').on('click', '#inserir', trataSubmitAjax('/home', loaderInserir));
+		$('#form').on('click', '#inserir', trataSubmitAjax('/home', loaderInserir, '#form > form'));
 		$('#form').on('click', '#alterar', alteraRedirect('/cadastro/usuario', loaderAlterar, aposAlterar));
 		$('#form').change('#permiteSenha', function(){
 			if($('#permiteSenha').prop('checked')){
@@ -56,9 +60,13 @@ $(function () {
 		}
 
 		function carregarForm(href) {
-			$('#form').load(href, function () {
-				loaderInserir.set($('#enviar .loader'), $('#enviar'));
-				loaderAlterar.set($('#alterar .loader'), $('#alterar'));
+			$('#form').load(href, function (responseText, textStatus, xhr) {
+				if (xhr.status == 200) {
+					loaderInserir.set($('#enviar .loader'), $('#enviar'));
+					loaderAlterar.set($('#alterar .loader'), $('#alterar'));
+				} else {
+					alert(responseText);
+				}
 			});
 		}
 

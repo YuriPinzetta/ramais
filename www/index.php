@@ -3,6 +3,7 @@
 require_once __DIR__.'/../vendor/autoload.php'; 
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use amixsi\Contato;
 use amixsi\ContatoDAO;
 use amixsi\Ramal;
@@ -25,6 +26,25 @@ $temUsuario =	function (Request $request) use ($app) {
 	if (!$session->has('usuario')) {
 		return $app->redirect('/login');
 	}
+};
+
+$permUsuario = function (array $masks) use ($app) {
+	return function(Request $request) use ($app, $masks){
+		$session = $app['session'];
+		$usuario = $session->get('usuario');
+  	$pdo = db();
+  	$usuarioDao = new UsuarioDAO($pdo);
+		$usuarioDb = $usuarioDao->consulta($usuario['id']);
+		if ($usuarioDb) {
+			$perm = $usuarioDb->getPusuario();
+			foreach ($masks as $maskPerm) {
+				if (($maskPerm & $perm) == $maskPerm) {
+					return;
+				}
+			}
+		}
+		return new Response('Acesso negado', 403);
+	};
 };
 
 $app->get('/test-jquery', function (Request $request) use ($app) { 
@@ -75,9 +95,17 @@ $app->get('/', function () use ($app) {
 });
 
 $app->get('/home', function (Request $request) use ($app) { 
-		return $app['twig']->render('home.twig', array(
-			'error' => $request->get('error')
-		));
+	$session = $app['session'];
+	$usuario = $session->get('usuario');
+	$pdo = db();
+	$usuarioDao = new UsuarioDAO($pdo);
+	$usuario = $usuarioDao->consulta($usuario['id']);
+	return $app['twig']->render('home.twig', array(
+		'error' => $request->get('error'),
+		'hasInserirU' => $usuario->hasPermUsuario('inserir'),
+		'hasInserir' => $usuario->hasPermContato('inserir'),
+		'hasConsultar' => $usuario->hasPermContato('consultar')
+	));
 })->before($temUsuario);
 
 $app->get('/logout', function () use ($app) { 
@@ -89,7 +117,8 @@ $app->get('/contato', function (Request $request) use ($app) {
 	return $app['twig']->render('contato.twig', array(
 		'message' => $app['session']->getFlashBag()->get('message')
 	));
-})->before($temUsuario);
+})->before($temUsuario)
+	->before($permUsuario(array(Usuario::INSERIR)));
 
 $app->post('/contato', function (Request $request) use ($app) { 
   try {
@@ -130,7 +159,8 @@ $app->get('/ramais', function (Request $request) use ($app) {
 		'message' => $app['session']->getFlashBag()->get('message'),
 		'contatos' => $contatos
 	));
-})->before($temUsuario);
+})->before($temUsuario)
+	->before($permUsuario(array(Usuario::INSERIR)));
 
 $app->get('/consulta', function (Request $request) use ($app) {
 	$data = $request->query->all();
@@ -152,6 +182,10 @@ $app->get('/consulta', function (Request $request) use ($app) {
     "Notebook"
 	);
 	$tipos_selecionado = null;
+	$session = $app['session'];
+	$usuario = $session->get('usuario');
+	$usuarioDao = new UsuarioDAO($pdo);
+	$usuario = $usuarioDao->consulta($usuario['id']);
 	return $app['twig']->render('consulta.twig', array(
 		'todos_contatos' => $todos_contatos,
 		'contato_selecionado' => $contato_selecionado,
@@ -159,9 +193,11 @@ $app->get('/consulta', function (Request $request) use ($app) {
 		'todos_cargos' => $todos_cargos,
 		'cargo_selecionado' => $cargo_selecionado,
 		'todos_tipos' => $todos_tipos,
-		'tipos_selecionado' => $tipos_selecionado
+		'tipos_selecionado' => $tipos_selecionado,
+		'hasAlterar' => $usuario->hasPermContato('alterar')
 	));
-})->before($temUsuario);
+})->before($temUsuario)
+	->before($permUsuario(array(Usuario::CONSULTAR)));
 
 $app->post('/edicao', function (Request $request) use ($app) {
 	$pdo = db();
@@ -245,7 +281,8 @@ $app->get('/edicao', function (Request $request) use ($app) {
 		'ramais' => $ramais,
 		'todos_tipos' => $todos_tipos
 	));
-})->before($temUsuario);
+})->before($temUsuario)
+	->before($permUsuario(array(Usuario::ALTERAR)));
 
 $app->get('/cadastro/usuario/form', function (Request $request) use ($app) {
 	$id = $request->query->get('id');
@@ -257,13 +294,14 @@ $app->get('/cadastro/usuario/form', function (Request $request) use ($app) {
 		$params['usuario'] = $usuario;
 	}
 	return $app['twig']->render('form.twig', $params);
-})->before($temUsuario);
+})->before($temUsuario)
+	->before($permUsuario(array(Usuario::INSERIR, Usuario::ALTERAR)));
 
 $app->post('/cadastro/usuario/form', function (Request $request) use ($app) {
 	$usuario = $request->request->get('usuario'); 
 	$senha = $request->request->get('senha'); 
 	$pusuario = array_sum($request->request->get('pusuario')); 
-	$pcontato = array_sum($request->request->get('pcontato')); 
+	$pcontato = array_sum($request->request->get('pcontato'));
 	$cadastro = array(
 		'usuario' => $usuario,
 		'senha' => $senha,
@@ -283,17 +321,29 @@ $app->post('/cadastro/usuario/form', function (Request $request) use ($app) {
 })->before($temUsuario);
 
 $app->get('/cadastro/usuario/table', function (Request $request) use ($app) {
+	$session = $app['session'];
+	$usuario = $session->get('usuario');
 	$data = $request->query->all();
 	$pdo = db();
 	$usuarioDao = new UsuarioDAO($pdo);
 	$usuarios = $usuarioDao->listar($data);
+	$usuario = $usuarioDao->consulta($usuario['id']);
 	return $app['twig']->render('table.twig', array(
-		'usuarios' => $usuarios
+		'usuarios' => $usuarios,
+		'hasAlterar' => $usuario->hasPermUsuario('alterar'),
 	));
 })->before($temUsuario);
 
 $app->get('/cadastro/usuario', function (Request $request) use ($app) {
-  return $app['twig']->render('usuario.twig');
+	$session = $app['session'];
+	$usuario = $session->get('usuario');
+	$pdo = db();
+	$usuarioDao = new UsuarioDAO($pdo);
+	$usuario = $usuarioDao->consulta($usuario['id']);
+	return $app['twig']->render('usuario.twig', array(
+		'hasInserir' => $usuario->hasPermUsuario('inserir'),
+		'HasConsultar' => $usuario->hasPermUsuario('consultar')
+	));
 })->before($temUsuario);
 
 $app->post('/cadastro/usuario', function (Request $request) use ($app) {
@@ -339,7 +389,9 @@ $app->put('/cadastro/usuario', function (Request $request) use ($app) {
   $usuarioDao = new UsuarioDAO($pdo);
 	if ($usuarioDao->verifica($cadastro)) {
 		$usuarioDao->altera($cadastro);
-		return $app->json(array('success' => true));
+		return $app->json(array(
+			'success' => true,
+		));
 	}
 	return $app->json(array(
 		'success' => false,

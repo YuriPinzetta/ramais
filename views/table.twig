@@ -8,9 +8,13 @@
 		{% for usuario in usuarios %}
 		<tr>
 			<td>
+				{% if hasAlterar %}
 				<a class="edit" href="/cadastro/usuario/form?id={{ usuario.id }} ">
+				{% endif %}
 					<span class="glyphicon glyphicon-edit" aria-hidden="true"> {{ usuario.login }} </span>
+				{% if hasAlterar %}
 				</a>
+				{% endif %}
 			</td>
 			<td>
 				<label class="checkbox-inline">
@@ -36,9 +40,11 @@
 				<!--
 				<a class="delete" href="/cadastro/usuario?id={{ usuario.id }}">
 				-->
+				{% if hasAlterar%}
 				<button class="btn btn-default pull-right delete" value="{{ usuario.id }}">
 					<span class="glyphicon glyphicon-trash" aria-hidden="true" style="color: red"></span>
 				</button>
+				{% endif %}
 				<!--
 				</a>
 				-->

@@ -73,12 +73,12 @@ function ComeComeLoader($loader, $btn){
 	};
 }
 
-function trataSubmitAjax(url, loader) {
+function trataSubmitAjax(url, loader, selector) {
 	if (loader === undefined) {
 		loader = ComeComeLoader($('.loader'));
 	}
 	return function (e) {
-		var $form = $(this);
+		var $form = selector && $(selector) || $(this);
 		var action = $form.prop('action');
 		var formData = $form.serialize();
 

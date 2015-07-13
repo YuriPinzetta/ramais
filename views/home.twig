@@ -10,34 +10,42 @@
 		<div class="row">
 			<div class="form-group">
 				<div class="col-md-4">
+					{% if hasInserir %}
 					<a href="/contato">
 						<button class="btn btn-default form-control">
 							<span>Cadastrar Contato</span>
 						</button>
 					</a>
+					{% endif %}
 				</div>
 				<div class="col-md-4">
+					{% if hasInserir %}
 					<a href="/ramais">
 						<button type="button" class="btn btn-default form-control">
 							<span>Cadastrar Ramais</span>
 						</button>
 					</a>
+					{% endif %}
 				</div>
 				<div class="col-md-4">
+					{% if hasConsultar %}
 					<a href="/consulta">
 						<button type="button" class="btn btn-default form-control">
 							<span> Consultar / Filtrar - Ramais</span>
 						</button>
 					</a>
+					{% endif %}
 				</div>
 				<div class="col-md-4">
 				</div>
 				<div class="col-md-4">
+					{% if hasInserirU %}
 					<a href="/cadastro/usuario">
 						<button type="button" class="btn btn-default form-control botao">
 							<span>Cadastrar / Filtrar - Usuário</span>
 						</button>
 					</a>
+					{% endif %}
 				<div>
 			</div>
 		</div>

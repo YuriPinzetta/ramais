@@ -1,9 +1,10 @@
-<form method="post">
+<form method="post" id="validateForm">
 	<div class="row">
   	<div class="col-md-3">
       <div class="form-group">
         <label>Usuário :</label>
-				<input type="text" name="usuario" id="input_contato" value="{{ usuario is defined ? usuario.login }}" class="form-control" autocomplete="off" />
+				<input type="text" name="usuario" id="input_contato" value="{{ usuario is defined ? usuario.login }}" 
+					class="form-control" autocomplete="off" id="inputUsuario" />
       </div>
     </div>
     <div class="col-md-3">
@@ -87,3 +88,11 @@
 		{% endif %}
   </div>
 </form>
+<script>
+		$('#validateFrom').validate({
+			rules:{
+				inputUsuario: {required: true},
+				inputSenha: {required: true}
+			}
+		});
+</script>
