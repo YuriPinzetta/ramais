@@ -130,7 +130,7 @@ $app->post('/contato', function (Request $request) use ($app) {
   }
 	$pdo = db();
   $contatoDao = new ContatoDAO($pdo);
-  $contatoDao->inserir($contato);
+	$contatoDao->inserir($contato);
 	return $app->json(array('success' => true));
 })->before($temUsuario);
 
