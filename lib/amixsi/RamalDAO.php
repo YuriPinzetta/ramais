@@ -30,7 +30,8 @@ class RamalDAO
         $stmt->execute(array(':id_contato' => $id_contato,
          ':id_ramal' => $id_ramal,
          ':tipos' => $tipos, 'ramal' => $ramais));
-    }
+		}
+
     public function listar(array $params)
     {
         $id_contato = $params['id_contato'];
@@ -49,13 +50,15 @@ class RamalDAO
             $ramaisObj[] = Ramal::fromArray($ramal);
         }
         return $ramaisObj;
-    }
+		}
+
     public function altera($id_contato, array $ramais)
     {
         foreach ($ramais as $ramal) {
             self::alteraRamal($id_contato, $ramal);
         }
-    }
+		}
+
     public function alteraRamal($id_contato, array $params)
     {
         $tipos = $params['tipos'];
@@ -66,7 +69,8 @@ class RamalDAO
         } else {
             echo "<script>alert ('Não houve alteração no banco, tente novamente.')</script>";
         }
-    }
+		}
+
     public function deleta(array $params)
     {
         $id = $params['id_contato'];

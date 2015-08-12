@@ -46,21 +46,21 @@ class ContatoDAO
         $contatos_foreach = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         $contatos_return = array();
         foreach ($contatos_foreach as $contato) {
-            $params = array(
-                                'id_contato' => $contato['id'],
-                                'tipos' => $tipos,
-                        );
-            $ramais = $this->ramalDao->listar($params);
-            $contato['ramais'] = $ramais;
-            if ($tipos === null || count($ramais) > 0) {
-                $contatos_return[] = Contato::fromArray($contato);
-            }
+        	$params = array(
+          	'id_contato' => $contato['id'],
+          	'tipos' => $tipos,
+        	);
+          $ramais = $this->ramalDao->listar($params);
+          $contato['ramais'] = $ramais;
+          if ($tipos === null || count($ramais) > 0) {
+              $contatos_return[] = Contato::fromArray($contato);
+          }
         }
 
         return $contatos_return;
     }
-    public function listarCargos(array $params)
-    {
+    public function listarCargos()
+		{
         $stmt = $this->pdo->prepare('select distinct cargos from contato');
         $stmt->execute();
         $cargos = $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -74,7 +74,7 @@ class ContatoDAO
         $id = $params['id_contato'];
         $stmt = $this->pdo->prepare('update contato set contato=:contatos, cargos=:cargos WHERE id = :id');
         $stmt->execute(array(':contatos' => $contatos, ':cargos' => $cargos, ':id' => $id));
-        $ramais = $this->ramalDao->altera($id, $ramais);
+				$ramais = $this->ramalDao->altera($id, $ramais);
     }
     public function deleta(array $params)
     {
