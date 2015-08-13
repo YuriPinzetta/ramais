@@ -62,8 +62,6 @@ class ContatoDAOTest extends PHPUnit_Framework_TestCase
 		$contato = new Contato('Yuri', 'AMIX', 1);
 		$expectedResult = $contato;
 
-		$expectedResult = 
-
 		$this->assertEquals($expectedResult, $result);
 	}
 

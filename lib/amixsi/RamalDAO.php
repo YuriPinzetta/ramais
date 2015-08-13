@@ -17,9 +17,9 @@ class RamalDAO
         $tipos = $ramal->getTipo();
         $ramais = $ramal->getNumero();
 
-        if (empty($tipos) || empty($ramais)) {
+        /*if (empty($tipos) || empty($ramais)) {
             return header("HTTP/1.1 404 Bad Request");
-        }
+        }*/
         
         $stmt = $this->pdo->prepare('select coalesce(max(id),0) + 1 as id from ramal');
         $stmt->execute();
@@ -67,7 +67,8 @@ class RamalDAO
         $stmt = $this->pdo->prepare("update ramal set tipo = :tipos, ramal = :ramal WHERE id_contato = :id_contato and id = :id");
         if ($stmt->execute(array(':tipos' => $tipos, ':ramal' => $ramal, ':id_contato' => $id_contato, ':id' => $id)) == true) {
         } else {
-            echo "<script>alert ('Não houve alteração no banco, tente novamente.')</script>";
+						return false;
+            //echo "<script>alert ('Não houve alteração no banco, tente novamente.')</script>";
         }
 		}
 
