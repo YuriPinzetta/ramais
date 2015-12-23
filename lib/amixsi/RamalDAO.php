@@ -57,7 +57,7 @@ class RamalDAO
         foreach ($ramais as $ramal) {
             self::alteraRamal($id_contato, $ramal);
         }
-		}
+    }
 
     public function alteraRamal($id_contato, array $params)
     {
@@ -70,7 +70,7 @@ class RamalDAO
 						return false;
             //echo "<script>alert ('Não houve alteração no banco, tente novamente.')</script>";
         }
-		}
+    }
 
     public function deleta(array $params)
     {

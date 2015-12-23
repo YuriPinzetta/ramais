@@ -17,7 +17,7 @@ class Contato
         if (empty($dados['cargos'])) {
             throw new \Exception('Cargos não preenchido');
         }
-				$id = isset($dados['id']) ? $dados['id'] : null;
+        $id = isset($dados['id']) ? $dados['id'] : null;
         $contato = new Contato($dados['contato'], $dados['cargos'], $id);
         if (isset($dados['ramais'])) {
             $contato->setRamais($dados['ramais']);

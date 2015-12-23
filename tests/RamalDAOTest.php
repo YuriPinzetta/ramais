@@ -134,6 +134,32 @@ class RamalDAOTest extends PHPUnit_Framework_TestCase
 		$ramalDao->alteraRamal($id_contato, $params);
 	}
 
+	public function testealtera()
+	{
+		$id_contato = 1;
+		$params = array(
+			array('tipos' => 'interno', 'ramal' => 333, 'id' => 1)
+		);
+		$tipos = $params[0]['tipos'];
+		$ramal = $params[0]['ramal'];
+		$id = $params[0]['id'];
+
+		$stmtMock = m::mock('PDOStatement')
+			->shouldReceive('execute')
+			->with(array(':tipos' => $tipos, ':ramal' => $ramal, ':id_contato' => $id_contato, ':id' => $id))
+			->andReturn(true)
+			->getMock();
+
+		$pdoMock = m::mock('PDO')
+			->shouldReceive('prepare')
+			->andReturn($stmtMock)
+			->getMock();
+
+		$ramalDao = new RamalDAO($pdoMock);
+
+		$ramalDao->altera($id_contato, $params);
+	}
+
 	public function testeDeleta()
 	{
 		$params = array('id_contato' => 1);

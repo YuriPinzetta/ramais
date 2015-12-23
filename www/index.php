@@ -94,6 +94,10 @@ $app->get('/', function () use ($app) {
 	return $app->redirect('/home');
 });
 
+$app->get('/phpunit', function () use ($app) {
+	return $app->redirect('/phpunit.xml');
+});
+
 $app->get('/home', function (Request $request) use ($app) { 
 	$session = $app['session'];
 	$usuario = $session->get('usuario');
